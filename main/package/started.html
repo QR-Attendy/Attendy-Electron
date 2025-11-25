@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../package/zesty-design/index.css">
+  <link rel="stylesheet" href="../package/zesty-design/animeEngine.css">
+
+  <title>Attendy - Let's get started</title>
+</head>
+
+<body>
+  <!--START Custom Title Bar (ELECTRON)-->
+  <div class="titlebar" id="titlebar">
+    <img src="../package/img/QR_attendy.ico" alt="logo">
+    <div id="title">Attendy - Let's get started</div>
+
+    <div class="controls">
+      <button id="minimize"></button>
+      <button id="close"></button>
+    </div>
+
+  </div>
+  <!--END Custom Title Bar (ELECTRON)-->
+
+  <!--main page-->
+  <main>
+    <div class="main-title">
+      <h1>QR Attendy</h1>
+      <h3>Attendance for everyone</h3>
+
+      <button id="start">Let's get started!</button>
+      <p>Powered by Nuclear Bomb</p>
+      <p>© 2025 QR Attendy. All rights reserved.</p>
+
+    </div>
+
+    <!--START of Get Started ppage-->
+    <div class="body-started">
+      <h2>Enter your name</h2>
+      <form class="Sign-in-field" id="signInForm" method="post">
+        <p>name</p>
+        <input type="name" name="name" class="field-signer" placeholder="name">
+        <p>username</p>
+        <input type="name" name="usermame" class="field-signer" placeholder="usermame">
+
+        <button type="submit" class="button-signer">Next</button>
+      </form>
+    </div>
+
+    <div class="body-choice">
+      <h2>What are you?</h2>
+      <form method="post" class="our-choice">
+        <div class="Label1">
+          <input type="radio" id="Teacher" name="role" value="Teacher">
+          <label for="Teacher">Teacher</label>
+        </div>
+        <div class="Label2">
+          <input type="radio" id="Studnet" name="role" value="Student">
+          <label for="Student">Student</label>
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+
+    </div>
+    <!--END of Get Started ppage-->
+
+  </main><!--END OF body-main-->
+
+
+  <div class="refresh-notice" style="display:none; opacity:0;">
+    <p class="message">Do you want to reload the page?</p>
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+  </div>
+
+  <script src="../../nitrogen_bomb/render_chunks.js"></script>
+  <script src="../package/Scripts/started.js"></script>
+  <script src="../package/Scripts/index.js"></script>
+  <script src="../nitrogen_bomb/render_chunks.js"></script>
+</body>
+
+</html>

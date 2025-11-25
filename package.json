@@ -1,0 +1,42 @@
+{
+  "name": "attendy",
+  "productName": "QR Attendy",
+  "version": "1.0.0",
+  "description": "QR attendance system",
+  "license": "AGPL-3.0-only",
+  "author": "ace",
+  "type": "commonjs",
+  "main": "main/nitrogen_bomb/core.js",
+  "scripts": {
+    "start": "electron .",
+    "watch": "nodemon --exec electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "title.attendy.test",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": "x64"
+        }
+      ],
+      "icon": "main/package/img/QR_attendyLOGO_transparent.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "main/package/img/QR_attendyLOGO_transparent.ico",
+      "uninstallerIcon": "main/package/img/QR_attendyLOGO_transparent.ico",
+      "uninstallDisplayName": "Nuclear Bomb",
+      "license": "license.md"
+    }
+  },
+  "devDependencies": {
+    "electron": "^39.2.3"
+  },
+  "dependencies": {
+    "electron-reload": "^2.0.0-alpha.1",
+    "nodemon": "^3.1.11"
+  }
+}

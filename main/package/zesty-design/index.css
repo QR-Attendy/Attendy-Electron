@@ -1,0 +1,298 @@
+/*
+QR Attendy base on Website and WebApp lol
+Develop by BELDAD-Ace on Github with the team group 1 for PR2
+aka Jhon Benedict Belad
+
+all rights reserved 2025
+
+*/
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  overflow: hidden;
+  background: linear-gradient(168deg, #000000 28%, #1f1f1f 69%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 300% 300%;
+  animation: BackgroundANI 10s ease-in-out infinite;
+ 
+}
+
+
+/*START OF Custom Title Bar*/
+
+.titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #141414;
+  color: white;
+  z-index: 99px;
+
+  img {
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+  }
+
+  /* Title styles */
+  #title {
+    flex-grow: 1;
+    /* Allow title to grow and take up remaining width */
+    font-size: 13px;
+    font-weight: bold;
+    -webkit-app-region: drag;
+    overflow: hidden;
+    /* Add this line to handle long titles gracefully */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+    text-overflow: ellipsis;
+    /* Add ellipsis for long titles */
+    padding: 10px 5px;
+  }
+}
+
+.unmaximized {
+  display: none;
+}
+/* Controls container styles */
+#controls {
+  flex-shrink: 0;
+  display: flex;
+}
+
+/* Control button styles */
+.controls button {
+  margin-right: 5px;
+  padding: 1px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #FFFFFF;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+
+}
+
+/* Minimize Icon */
+#minimize::before {
+  content: "\2013";
+  /* Unicode for the horizontal line */
+}
+
+/* Unmaximize Icon (initial state) */
+.unmaximized::before {
+  content: "\25A2";
+  /* Unicode for a solid square */
+}
+
+/* Maximize Icon (when window is maximized) */
+.maximized::before {
+  content: "\25A3";
+  /* Unicode for a solid square */
+}
+
+/* Close Icon */
+#close::before {
+  content: "\2715";
+  /* Unicode for the multiplication sign (X) */
+}
+
+/*END OF Custom Title Bar*/
+
+
+
+/*START of sign in/up page*/
+/*for sign up and sign in inputs*/
+#dont {
+  /*Dont touch this one*/
+  border-color: transparent;
+  background-color: transparent;
+  cursor: pointer;
+  color: white;
+}
+
+main {
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+.main-title {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+
+  margin-top: 50px;
+  padding: 35px;
+  border-radius: 14px;
+  /* border: 3px solid rgba(86, 84, 255, 0.35); */
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: white;
+
+  h1 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 800;
+    text-shadow: 0 0 10px #00ffff80,
+      0 0 20px #00ffff8d,
+      0 0 20px #00ffff37;
+  }
+
+  h3 {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: -5px;
+  }
+
+  button {
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 290px;
+    color: white;
+    background-color: #0cc0df;
+    border: 2px solid #0097b2;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+    cursor: pointer;
+    margin-bottom: 15px;
+
+  }
+
+  p {
+
+  }
+
+}
+
+.body-started {
+  display: none;
+}
+
+.body-started {
+  margin-top: 100px;
+  transition: all 0.3s ease-in-out;
+  background: #33333388;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
+  box-shadow: white 0px 0px 8px;
+  color: #ffffff;
+  width: 350px;
+  height: 370px;
+  font-weight: bold;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .Sign-in-field,
+  .Sign-up-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+
+
+    label {
+      font-weight: 700;
+      font-size: 10px
+    }
+
+    .field-signer {
+      border-radius: 15px;
+      padding: 5px 7px;
+      border: 2px solid rgb(255, 255, 255);
+      outline: none;
+      background-color: white;
+      min-height: 20px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .choiceButton-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .Sign-up-choice-button {
+      width: 220px;
+      display: flex;
+      flex-direction: column;
+
+
+      .student,
+      .teacher {
+        display: flex;
+        flex-direction: row;
+        padding: 0px 0px 5px 0px;
+
+        label {
+          margin-left: 3px;
+          font-size: 13px;
+        }
+      }
+
+
+    }
+  }
+
+  .button-signer {
+    margin-left: auto;
+    padding: 10px 30px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: #ffffff 0px 0px 15px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+.refresh-Notice {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  background-color: #00000037;
+  backdrop-filter: blur(10px);
+  
+  opacity: 0;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+
+
+  .box {
+    background-color: red;
+    padding: 15px;
+  }
+
+}

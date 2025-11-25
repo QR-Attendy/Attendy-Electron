@@ -1,0 +1,41 @@
+@keyframes sec1Span {
+  0%{color: white;}
+  10%{color: #00ffff;}
+  20%{color: #00b4d4;}
+  40%{color: black;}
+  50%{color: #585858;}
+  70%{color: lightgray;}
+  100%{color: white;}
+}
+
+@keyframes BackgroundANI {
+  0% {
+    background-position: 0% 50%;
+
+  }
+
+  50% {
+    background-position: 50% 100%;
+
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes liNav-IN {
+  0%{}
+
+  50%{}
+
+  100%{}
+}
+
+@keyframes liNav-OUT {
+  0%{}
+
+  50%{}
+
+  100%{}
+}

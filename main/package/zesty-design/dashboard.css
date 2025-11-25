@@ -1,0 +1,282 @@
+/*
+QR Attendy base on Website and WebApp lol
+Develop by BELDAD-Ace on Github with the team group 1 for PR2
+aka Jhon Benedict Belad
+
+all rights reserved 2025
+
+*/
+/* body {
+  display: flex;
+  align-items: center;
+} */
+main {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  flex-direction: row;
+  top: 35px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.titlebar {
+  display: flex;
+  height: fit-content;
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 3%;
+    width: 100%;
+    transition: 0.5s;
+
+    border-bottom: #ffffff00 2px solid;
+    color: white;
+
+    .title {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    img {
+      opacity: 0;
+
+    }
+
+  }
+}
+
+
+/* START OF THE SIDEBAR DASHBOARD */
+.side-nav {
+  width: 205px;
+  margin-top: 35px;
+  height: 100%;
+
+  background-color: #4c4c4c83;
+  backdrop-filter: blur(10px);
+  box-shadow: rgb(255, 255, 255) -4px 6px 20px;
+
+
+  /* The user */
+  .user-info-Container {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+
+    border-radius: 15px;
+    border: none;
+    background-color: transparent;
+
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+
+
+    &:hover {
+      background-color: #000000;
+      box-shadow: white 0px 0px 15px;
+    }
+
+    img {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 10px;
+      border: 1px solid #ffffff;
+    }
+
+    h3 {
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    p {
+      font-size: 10px;
+      color: #ffffff;
+    }
+  }
+
+  /* Boto Buttons */
+  .boto-Nav {
+    transition: all 0.5s ease-in-out;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+
+    &:hover {
+      background-color: lightgray;
+    }
+
+    &:disabled {
+      color: red;
+
+      &:hover {
+        background-color: gray;
+      }
+    }
+
+  }
+
+  /* student or teacher Container */
+  .studentORteacher-Container {
+    border-top: 2px solid #ffffff;
+    padding-top: 10px;
+    margin-top: 10px;
+    text-align: center;
+    height: fit-content;
+    /* background-color: red; */
+
+
+    p {
+      font-size: 10px;
+      color: gray;
+    }
+  }
+
+  /* Boto Container */
+  .boto-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+
+  }
+
+  .boto-Container2 {
+    position: absolute;
+    bottom: 20px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+
+    .boto-Nav2 {
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+
+      width: 30px;
+
+      svg {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    .boto-Nav2.sign-out {
+      width: 110px;
+      display: flex;
+
+      p {
+        padding-top: 3px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+  }
+
+}
+
+/*DASHBOARD CONTAINER*/
+.dashboard-container {
+  /* clear: left; */
+  margin-left: auto;
+  /* border: 2px solid #3c00ff; */
+  border-radius: 15px 0px 0px 0px;
+  box-shadow: rgb(255, 255, 255) 6px 10px 30px -1px, rgba(0, 0, 0, 0.87) 0px 5px 4px -1px;
+  background-color: #fdfdfd16;
+  overflow: hidden;
+
+  width: calc(100% - 230px);
+  height: 100%;
+  margin-top: 35px;
+
+  display: flex;
+  flex-direction: column;
+
+  .dashGreet {
+    color: white;
+    padding: 20px;
+    font-size: 30px;
+
+    span {
+      color: aqua;
+    }
+  }
+
+  .sub-dashboard-container {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: space-around;
+    overflow: auto;
+
+    .user-stat {
+      display: flex;
+      flex-direction: column;
+
+
+      width: 390px;
+      height: 145px;
+      /* margin: 0px 0px 0px 40px; */
+      padding: 10px;
+      background-color: white;
+      border-radius: 20px;
+
+      h2 {
+        font-size: 25px;
+      }
+
+      .stat-content {
+        display: flex;
+        flex-direction: row;
+
+        .statNO {
+          margin: 5px auto 10px;
+
+          h2 {
+            font-size: 20px;
+          }
+
+          #present-stat,
+          #excuse-stat,
+          #absent-stat {
+            text-align: center;
+            font-weight: bold;
+            font-size: 25px;
+            color: #000000;
+          }
+        }
+      }
+    }
+
+    .user-schedules {
+      background-color: white;
+      margin: 0px 0px 0px 0px;
+      padding: 10px;
+
+      display: flex;
+      flex-direction: column;
+      height: max-content;
+    }
+
+  }
+
+}
