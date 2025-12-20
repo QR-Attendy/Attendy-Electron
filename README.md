@@ -1,5 +1,5 @@
-# QR Attendy 
-**QR Attendy** is the official secure QR attendance application. It combines a desktop app (Electron) with backend/API components to provide a workflow for generating and scanning QR codes for attendance tracking. The repository contains frontend, backend and utility code across JavaScript, Java and Python.
+# QR Attendy on Electron 
+**QR Attendy on Electron** is an early stage of QR Attendy 
 
 ---
 
