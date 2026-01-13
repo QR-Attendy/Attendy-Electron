@@ -1,0 +1,47 @@
+{
+  "name": "attendy",
+  "productName": "QR Attendy",
+  "version": "1.0.0",
+  "description": "QR attendance system",
+  "license": "AGPL-3.0-only",
+  "author": "ace",
+  "type": "module",
+  "main": "source/snapdragon.js",
+  "scripts": {
+    "start": "electron .",
+    "watch": "cross-env NODE_ENV=developmen nodemon --exec electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "title.attendy.test",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": "x64"
+        }
+      ],
+      "icon": "main/package/media/QR_attendy/icon-LOGO.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "main/package/media/icon-LOGO.ico",
+      "uninstallerIcon": "main/package/media/icon-LOGO.ico",
+      "uninstallDisplayName": "Nuclear Bomb",
+      "license": "LICENSE.txt"
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.5.0",
+    "electron-store": "^11.0.2",
+    "html5-qrcode": "^2.3.8"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "electron": "^39.2.4",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-builder": "^26.0.12",
+    "nodemon": "^3.1.11"
+  }
+}
