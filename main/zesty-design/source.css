@@ -1,0 +1,329 @@
+/*
+QR Attendy base on Website and WebApp lol
+Develop by BELDAD-Ace on Github with the team group 1 for PR2
+aka Jhon Benedict Belad
+
+all rights reserved 2025
+
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* RANDOM ANTI TEXT SELECT GO */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.app-info {
+  text-align: center;
+}
+.NOTICE-EXP {
+  color: red;
+}
+.SOON {
+  text-align: center;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-clr-DEFAULT);
+  overflow: hidden;
+}
+
+main {
+  overflow: none;
+  position: absolute;
+  bottom: 0;
+  top: 32px;
+  left: 0;
+  right: 0;
+}
+
+:root {
+  --bg-clr-DEFAULT: #ededed;
+  --bg-clr-trans: #00000072;
+
+  --txt-clr-primary: #000000;
+  --txt-clr-secondary: #929292;
+  --txt-clr-inverse: white;
+  --txt-clr-disabled: #909090;
+  --txt-clr-hover: #4bf9ff;
+
+  --btn-clr-primary: #656565;
+  --btn-clr-secondary: #929292;
+  --btn-clr-inverse: #ffffff;
+  --btn-clr-disabled: #6b4949;
+  --btn-clr-hover: #d1d1d1;
+
+  --svg-stroke-primary: #000000;
+  --svg-stroke-secondary: #929292;
+  --svg-stroke-inverse: white;
+  --svg-stroke-disabled: #909090;
+  --svg-stroke-hover: #4bf9ff;
+
+  --bg-clr-DEFAULT-dark: #080808;
+
+}
+
+/*START OF Custom Title Bar*/
+
+.window {
+  color: var(--txt-clr-inverse);
+  position: sticky;
+  width: 100%;
+  height: 32px;
+  background: #1d1d1d;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  -webkit-app-region: drag;
+
+  .title-bar-text {
+    margin-left: 12px;
+    font-size: 14px;
+    color: var(--bg-clr-primary);
+  }
+
+  .title-bar-controls {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    -webkit-app-region: no-drag;
+
+    button {
+      background-color: #1d1d1d;
+      color: var(--txt-clr-inverse);
+      transition: 300ms ease-in-out;
+
+      width: 46px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      border: none;
+
+      &:hover {
+        background-color: #545454;
+      }
+
+      &:last-child:hover {
+        background: #ff0000;
+      }
+    }
+  }
+}
+
+/*END OF Custom Title Bar*/
+
+/* =========================================================== */
+/* BASED THEME (White theme mode) */
+/* =========================================================== */
+
+main {
+  background-color: var(--bg-clr-DEFAULT);
+  color: var(--txt-clr-primary);
+
+  a {
+    color: var(--txt-clr-primary);
+
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--txt-clr-primary);
+  }
+}
+
+#side-bar {
+
+  border-radius: 0px 25px 25px 0px;
+  background: linear-gradient(162deg, cyan 0%, white 15%);
+  transition: 350ms all ease-in-out;
+
+  a,
+  .dropdown-btn,
+  li {
+    color: var(--txt-clr-primary);
+    transition: 350ms all ease-in-out;
+  }
+
+  .sub,
+  .sub2 {
+    color: var(--txt-clr-secondary);
+  }
+
+  #description {
+    color: var(--txt-clr-primary);
+  }
+}
+
+#QR-main:hover {
+  background-color: transparent;
+}
+
+#toggle-btn:hover {
+  background-color: var(--hover-clr);
+}
+
+
+li:hover:not(:first-child) {
+  background-color: var(--btn-clr-hover);
+  border-radius: 0px 15px 15px 0px;
+}
+
+.active {
+  background-color: var(--btn-clr-hover);
+}
+
+#side-bar a:hover,
+#side-bar .dropdown-btn:hover {
+  margin-left: 6px;
+}
+
+svg {
+  fill: var(--svg-stroke-primary);
+}
+
+.camera-activation-container.activate {
+  background-color: #00000055;
+}
+
+.stat-dash-container {
+  background-color: var(--btn-clr-secondary);
+  color: var(--txt-clr-inverse);
+
+  .numbering {
+    background-color: var(--btn-clr-hover);
+    color: var(--txt-clr-primary);
+
+  }
+}
+
+menu {
+
+  .tableOf-Students {
+    background-color: var(--btn-clr-secondary);
+    color: var(--txt-clr-inverse);
+  }
+
+  .tableOf-mostPresent {
+    background-color: var(--btn-clr-secondary);
+    color: var(--txt-clr-inverse);
+  }
+}
+
+table {
+  border-collapse: collapse;
+  color: var(--bg-clr-DEFAULT-dark);
+
+  th,
+  td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+
+
+}
+
+.caption-actual {
+  color:var(--txt-clr-primary);
+}
+.caption-download {
+  background-color: #494949;
+}
+
+#download-sheet,#download-sheet-specDate {
+  background-color: #656565;
+  color: var(--txt-clr-inverse);
+}
+
+/* ========================================== */
+/* miscellaneous */
+/* ========================================== */
+
+.loading-interface {
+  transition: all 0.5S ease-in-out;
+  opacity: 0;
+  position: fixed;
+  top: 32px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.872);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+
+  .loader {
+    box-shadow: #0097b2 0px 0px 15px;
+    border: 8px solid #d4d4d4;
+    border-top: 8px solid #494949;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: loader 2s linear infinite;
+  }
+
+  p {
+    font-weight: bold;
+    padding: 15px;
+    color: white;
+  }
+}
+
+.loading-interface-dash {
+  transition: all 0.6s ease-in-out;
+  opacity: 0;
+  position: fixed;
+  top: 32px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #494949;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+
+  img {
+    opacity: 1;
+    -webkit-user-drag: none;
+    /* Chrome, Safari, Edge */
+    -webkit-user-select: none;
+    /* Chrome, Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE/Edge */
+    user-select: none;
+    /* Standard */
+    width: 150px;
+    filter: drop-shadow(20px 20px 20px black);
+
+    animation: loadingLogo 5s ease-in-out infinite 1s;
+
+  }
+}

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../main/zesty-design/source.css">
+  <link rel="stylesheet" href="../main/zesty-design/dashboard.css">
+  <link rel="stylesheet" href="../main/zesty-design/animeEngine.css">
+</head>
+
+<body>
+  <!--START Custom Title Bar (ELECTRON)-->
+  <!-- START OF window controls -->
+  <div class="window">
+    <div class="title-bar-text">Dashboard</div>
+    <div class="title-bar-controls">
+      <button id="minimize">—</button>
+      <button id="maximize">▢</button>
+      <button id="close">X</button>
+    </div>
+  </div>
+  <!-- END OF window controls -->
+  <!--END Custom Title Bar (ELECTRON)-->
+
+  <main id="teacher-main">
+    <!-- START OF side left navigation bar continer -->
+    <nav id="side-bar">
+      <ul>
+        <li>
+          <span class="logo"><img src="../main/media/icons/LOGO-T.png" alt="LOGO">QR Attendy</span>
+          <button onclick=toggleSidebar() id="toggle-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+              <path
+                d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z" />
+            </svg>
+          </button>
+        </li>
+
+        <p class="sub">MAIN</p>
+        <li>
+          <a href="#dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li>
+          <button onclick=toggleSubMenu(this) class="dropdown-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M480-240q-56 0-107 17.5T280-170v10h400v-10q-42-35-93-52.5T480-240Zm0-80q69 0 129 21t111 59v-560H240v560q51-38 111-59t129-21Zm0-160q-25 0-42.5-17.5T420-540q0-25 17.5-42.5T480-600q25 0 42.5 17.5T540-540q0 25-17.5 42.5T480-480ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80H240Zm240-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Zm0-140Z" />
+            </svg>
+            <span>Student</span>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+              <path
+                d="M480-361q-8 0-15-2.5t-13-8.5L268-556q-11-11-11-28t11-28q11-11 28-11t28 11l156 156 156-156q11-11 28-11t28 11q11 11 11 28t-11 28L508-372q-6 6-13 8.5t-15 2.5Z" />
+            </svg>
+          </button>
+          <ul class="sub-menu">
+            <div>
+              <li>
+                <a href="#attendance">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#000000">
+                    <path
+                      d="M320-280q17 0 28.5-11.5T360-320q0-17-11.5-28.5T320-360q-17 0-28.5 11.5T280-320q0 17 11.5 28.5T320-280Zm0-160q17 0 28.5-11.5T360-480q0-17-11.5-28.5T320-520q-17 0-28.5 11.5T280-480q0 17 11.5 28.5T320-440Zm0-160q17 0 28.5-11.5T360-640q0-17-11.5-28.5T320-680q-17 0-28.5 11.5T280-640q0 17 11.5 28.5T320-600Zm120 320h240v-80H440v80Zm0-160h240v-80H440v80Zm0-160h240v-80H440v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
+                  </svg>
+                  Attendance
+                </a>
+              </li>
+              <li>
+                <a href="#statistics">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#000000">
+                    <path
+                      d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
+                  </svg>
+                  Statistics
+                </a>
+              </li>
+            </div>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#calendar">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+            </svg>
+            <span>Calendar</span>
+          </a>
+        </li>
+
+        <li id="QR-main">
+          <div class="QR-container">
+            <div class="qr-image-container">
+              <img id="qr-image" src="" alt="">
+            </div>
+            <p id="description">Scan your student's QR Code today to be able to track their attendance</p>
+            <div class="button-qr-container">
+              <button id="scan-QR">Scan QR</button>
+              <button id="show-QR">Show QR</button>
+            </div>
+
+          </div>
+        </li>
+
+        <div class="sub-side-bar">
+          <li></li>
+          <p class="sub2">USER</p>
+          <li>
+            <a href="#settings">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#000000">
+                <path
+                  d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+              </svg>
+              <span>Settings</span>
+            </a>
+          </li>
+        </div>
+
+      </ul>
+    </nav>
+    <!-- END OF side left navigation bar continer -->
+
+
+    <!-- START OF dashboard container -->
+    <section class="dashboard-container">
+      <div class="sub-dashboard-container">
+        <div>
+          <h1>Dashboard</h1>
+          <p><span id="schoolNick"></span> • <span id="workspace"></span> • <span id="page"></span></p>
+        </div>
+
+        <div class="profile-card">
+          <button id="notification">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
+            </svg>
+          </button>
+          <button class="profile-info">
+            <div>
+              <p id="fullname"></p>
+              <p id="username"></p>
+              <p id="email"></p>
+            </div>
+            <img id="profile-picture" src="../src/media/image/LOGO.png" alt="">
+          </button>
+        </div>
+      </div>
+
+      <div class="stat-dash-container">
+        <div class="numbering">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" />
+            </svg>
+            <p><span id="student-total">0</span></p>
+          </div>
+          <div class="title-total">
+            <p class="total-title">Total students of </p>
+            <div class="select-container">
+              <select name="" id="" class="select-box">
+                <option value="all">All Section</option>
+              </select>
+
+            </div>
+          </div>
+        </div>
+        <div class="numbering">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm220 322v-120q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v120h-80Zm80-280v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Zm-480-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM0-160v-112q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v112H0Zm320-400q33 0 56.5-23.5T400-640q0-33-23.5-56.5T320-720q-33 0-56.5 23.5T240-640q0 33 23.5 56.5T320-560ZM80-240h480v-32q0-11-5.5-20T540-306q-54-27-109-40.5T320-360q-56 0-111 13.5T100-306q-9 5-14.5 14T80-272v32Zm240-400Zm0 400Z" />
+            </svg>
+            <p><span id="student-present">0</span></p>
+          </div>
+          <h1>Present today</h1>
+        </div>
+        <div class="numbering">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M819-28 680-167v7H40v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q12 0 24.5.5T409-438l-42-42h-7q-66 0-113-47t-47-113v-7L27-820l57-57L876-85l-57 57ZM666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120h-5L755-320q-9-33-31.5-62.5T666-434Zm-306 74q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32h480v-7l-87-87q-38-13-76.5-19.5T360-360Zm202-153q19-28 28.5-60t9.5-67q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113q0 66-49.5 113T595-480l-33-33Zm-58-58-64-64v-5q0-33-23.5-56.5T360-720h-5l-64-64q16-8 33-12t36-4q66 0 113 47t47 113q0 19-4 36t-12 33ZM365-240Zm33-438Z" />
+            </svg>
+            <p><span id="student-absent">0</span></p>
+          </div>
+          <h1>Absent Today</h1>
+        </div>
+        <div class="numbering">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm220 322v-120q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v120h-80Zm240-360H720v-80h240v80Zm-640 40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM0-160v-112q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v112H0Zm320-400q33 0 56.5-23.5T400-640q0-33-23.5-56.5T320-720q-33 0-56.5 23.5T240-640q0 33 23.5 56.5T320-560ZM80-240h480v-32q0-11-5.5-20T540-306q-54-27-109-40.5T320-360q-56 0-111 13.5T100-306q-9 5-14.5 14T80-272v32Zm240-400Zm0 400Z" />
+            </svg>
+            <p><span id="student-late">0</span></p>
+          </div>
+          <h1>Late Today</h1>
+        </div>
+      </div>
+
+      <menu>
+        <div class="tableOf-Students">
+          <h1>Recent Students</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Fullname</th>
+                <th>Time In</th>
+                <th>Section</th>
+              </tr>
+            </thead>
+            <tbody id="recent-students-tbody">
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tableOf-mostPresent">
+          <h1>Most Present Students <p style="font-size: 15px;">Every Month</p>
+          </h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Fullname</th>
+                <th>Days Present</th>
+              </tr>
+            </thead>
+            <tbody id="most-present-tbody">
+
+            </tbody>
+          </table>
+        </div>
+      </menu>
+
+    </section>
+
+    <section class="student-attendance-container closed">
+      <div class="sub-dashboard-container">
+        <div>
+          <h1>Attendance</h1>
+          <p><span id="schoolNick"></span> • <span id="workspace"></span> • <span id="page"></span></p>
+        </div>
+
+        <div class="profile-card">
+          <button id="notification">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
+            </svg>
+          </button>
+          <button class="profile-info">
+            <div>
+              <p id="fullname2"></p>
+              <p id="username2"></p>
+              <p id="email2"></p>
+            </div>
+            <img id="profile-picture" src="../src/media/image/LOGO.png" alt="">
+          </button>
+        </div>
+      </div>
+      <div class="main-container">
+
+        <div class="attendance-table-container">
+          <div class="options">
+            <button id="add-section">add Section</button>
+
+            <div class="Out-setter">
+              <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="select-all-rows">
+                Select All</label>
+              <label style="margin-left:8px">Set Time Out:</label>
+              <input type="time" id="timeout-time" />
+              <button id="apply-timeout-btn">Apply Time Out</button>
+            </div>
+          </div>
+
+          <table>
+            <caption class="caption-actual">Attendance as of <span id="date-time-attendance-table"></span></caption>
+            <caption class="caption-download">
+              <div class="option-caption">
+                <button id="download-sheet" class="as-excel">
+                  <svg width="24px" height="24px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <path
+                      d="M56 30c0-1.662 1.338-3 3-3h108c1.662 0 3 1.338 3 3v132c0 1.662-1.338 3-3 3H59c-1.662 0-3-1.338-3-3v-32m0-68V30"
+                      style="fill-opacity:.402658;stroke:#000000;stroke-width:12;stroke-linecap:round;paint-order:stroke fill markers" />
+                    <rect width="68" height="68" x="-58.1" y="40.3" rx="3"
+                      style="fill:none;fill-opacity:.402658;stroke:#000000;stroke-width:12;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+                      transform="translate(80.1 21.7)" />
+                    <path
+                      d="M138.79 164.725V27.175M56.175 58.792H170M170 96H90.328M169 133.21H56.175M44.5 82l23 28m0-28-23 28"
+                      style="fill:none;stroke:#000000;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+                  </svg>
+                  Download
+                </button>
+                <form action="" class="search-container">
+                  <input type="search" name="search-student" id="" class="search-input"
+                    placeholder="Search for student..">
+                  <button id="search-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                      fill="#000000">
+                      <path
+                        d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </caption>
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Fullname</th>
+                <th>Time In/Out</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-tbody">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="attendance-table-section-container">
+          <label for=""></label>
+          <table>
+            <thead>
+              <tr>
+                <th>Section</th>
+                <th>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#000000">
+                    <path
+                      d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm220 322v-120q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v120h-80Zm80-280v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Zm-480-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM0-160v-112q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v112H0Zm320-400q33 0 56.5-23.5T400-640q0-33-23.5-56.5T320-720q-33 0-56.5 23.5T240-640q0 33 23.5 56.5T320-560ZM80-240h480v-32q0-11-5.5-20T540-306q-54-27-109-40.5T320-360q-56 0-111 13.5T100-306q-9 5-14.5 14T80-272v32Zm240-400Zm0 400Z" />
+                  </svg>
+                  <p>Present</p>
+                </th>
+                <th>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#000000">
+                    <path
+                      d="M819-28 680-167v7H40v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q12 0 24.5.5T409-438l-42-42h-7q-66 0-113-47t-47-113v-7L27-820l57-57L876-85l-57 57ZM666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120h-5L755-320q-9-33-31.5-62.5T666-434Zm-306 74q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32h480v-7l-87-87q-38-13-76.5-19.5T360-360Zm202-153q19-28 28.5-60t9.5-67q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113q0 66-49.5 113T595-480l-33-33Zm-58-58-64-64v-5q0-33-23.5-56.5T360-720h-5l-64-64q16-8 33-12t36-4q66 0 113 47t47 113q0 19-4 36t-12 33ZM365-240Zm33-438Z" />
+                  </svg>
+                  <p>Absent</p>
+                </th>
+                <th>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#000000">
+                    <path
+                      d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm220 322v-120q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v120h-80Zm240-360H720v-80h240v80Zm-640 40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM0-160v-112q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v112H0Zm320-400q33 0 56.5-23.5T400-640q0-33-23.5-56.5T320-720q-33 0-56.5 23.5T240-640q0 33 23.5 56.5T320-560ZM80-240h480v-32q0-11-5.5-20T540-306q-54-27-109-40.5T320-360q-56 0-111 13.5T100-306q-9 5-14.5 14T80-272v32Zm240-400Zm0 400Z" />
+                  </svg>
+                  <p>Late</p>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="attendance-section-tbody">
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+    </section>
+
+    <section class="student-statistics-container closed">
+      <div class="sub-dashboard-container">
+        <div>
+          <h1>Statistics</h1>
+          <p><span id="schoolNick"></span> • <span id="workspace"></span> • <span id="page"></span></p>
+        </div>
+
+        <div class="profile-card">
+          <button id="notification">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+              <path
+                d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
+            </svg>
+          </button>
+          <button class="profile-info">
+            <div>
+              <p id="fullname3"></p>
+              <p id="username3"></p>
+              <p id="email3"></p>
+            </div>
+            <img id="profile-picture" src="../src/media/image/LOGO.png" alt="">
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="calendar-container closed">
+
+      <div class="sub-dashboard-container">
+        <div>
+          <h1>Calendar</h1>
+          <p><span id="schoolNick"></span> • <span id="workspace"></span> • <span id="page"></span></p>
+        </div>
+      </div>
+      <div class="main-container2">
+
+        <div class="calendar-X-stat-container">
+          <div class="the-calendar">
+            <div class="calendar-toolbar">
+              <button id="calendar-prev" title="Previous month">◀</button>
+              <div id="calendar-month-label" style="min-width:220px; text-align:center; font-weight:bold"></div>
+              <button id="calendar-next" title="Next month">▶</button>
+              <div style="flex:1"></div>
+            </div>
+
+            <div class="calendar-grid" id="calendar-grid" aria-label="Month calendar" style="margin-bottom:12px;"></div>
+          </div>
+          <div class="the-stat">
+            <div>
+              <h1>attendance as of <span id="specific-day-attendance"></span></h1>
+            </div>
+            <div class="column-graph-container">
+              <canvas id="column-attendCalend-graph"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="list-student-calendar-container">
+          <table>
+            <caption class="caption-download">
+              <div class="option-caption">
+                <button id="download-sheet-specDate" class="as-excel">
+                  <svg width="24px" height="24px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <path
+                      d="M56 30c0-1.662 1.338-3 3-3h108c1.662 0 3 1.338 3 3v132c0 1.662-1.338 3-3 3H59c-1.662 0-3-1.338-3-3v-32m0-68V30"
+                      style="fill-opacity:.402658;stroke:#000000;stroke-width:12;stroke-linecap:round;paint-order:stroke fill markers" />
+                    <rect width="68" height="68" x="-58.1" y="40.3" rx="3"
+                      style="fill:none;fill-opacity:.402658;stroke:#000000;stroke-width:12;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+                      transform="translate(80.1 21.7)" />
+                    <path
+                      d="M138.79 164.725V27.175M56.175 58.792H170M170 96H90.328M169 133.21H56.175M44.5 82l23 28m0-28-23 28"
+                      style="fill:none;stroke:#000000;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+                  </svg>
+                  Download
+                </button>
+                <div class="select-container">
+                  <select name="section-attendance" id="attendance-section-select" class="select-box">
+                    <option value="all">All Sections</option>
+
+                  </select>
+                </div>
+
+                <form action="" class="search-container">
+                  <input type="search" name="search-student" id="" class="search-input"
+                    placeholder="Search for student..">
+                  <button id="search-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                      fill="#000000">
+                      <path
+                        d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+
+            </caption>
+            <thead>
+              <tr>
+                <th>Fullname</th>
+                <th>Section</th>
+                <th>Status</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-specDate-tbody">
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="settings-container closed">
+      <div class="full-profile-container">
+        <h1>Profile</h1>
+
+        <div class="profile-main">
+          <button id="change-profile-picture">
+            <div class="hover-change-profile">
+              <svg width="24px" height="24px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g id="Dribbble-Light-Preview" transform="translate(-340.000000, -2199.000000)" fill="#000000">
+                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                      <path
+                        d="M306,2057.9552 C306,2058.5059 305.552,2058.95284 305,2058.95284 L304,2058.95284 L304,2060.00236 C304,2060.55306 303.552,2061 303,2061 C302.448,2061 302,2060.55306 302,2060.00236 L302,2058.95284 L301,2058.95284 C300.448,2058.95284 300,2058.5059 300,2057.9552 C300,2057.4045 300.448,2056.95755 301,2056.95755 L302,2056.95755 L302,2056.01179 C302,2055.46109 302.448,2055.01415 303,2055.01415 C303.552,2055.01415 304,2055.46109 304,2056.01179 L304,2056.95755 L305,2056.95755 C305.552,2056.95755 306,2057.4045 306,2057.9552 M294.623,2048.90958 C294.407,2048.89162 294.19,2048.87666 293.969,2048.87666 C293.766,2048.87666 293.567,2048.89162 293.368,2048.90658 C292.017,2048.61627 291,2047.41711 291,2045.98349 C291,2044.33339 292.346,2042.99057 294,2042.99057 C295.654,2042.99057 297,2044.33339 297,2045.98349 C297,2047.4201 295.979,2048.62226 294.623,2048.90958 M286.018,2055.95991 C286.004,2055.9649 286.014,2055.96091 286,2055.9659 L286,2041.98694 C286,2041.43624 286.448,2040.99528 287,2040.99528 L293.847,2040.99528 C291.157,2041.07709 289,2043.27689 289,2045.9805 C289,2047.4211 289.622,2048.71105 290.602,2049.62189 C288.124,2050.76918 286.332,2053.13758 286.018,2055.95991 M298.903,2044.97588 C298.493,2042.87085 296.631,2041.02721 294.066,2040.99528 L301,2040.99528 C301.552,2040.99528 302,2041.44223 302,2041.99293 L302,2050.9717 C302,2051.5224 302.448,2051.96935 303,2051.96935 C303.552,2051.96935 304,2051.5224 304,2050.9717 L304,2040.99528 C304,2039.89289 303.105,2039 302,2039 L286,2039 C284.895,2039 284,2039.89289 284,2040.99528 L284,2056.95755 C284,2058.05895 284.895,2058.95284 286,2058.95284 L296,2058.95284 C296.552,2058.95284 297,2058.5059 297,2057.9552 C297,2057.4045 296.552,2056.95755 296,2056.95755 L287.975,2056.95755 C287.974,2056.95755 287.969,2056.89171 287.969,2056.85081 C287.969,2050.76719 295.355,2049.96309 297.21,2051.68302 C298.283,2052.67767 299.674,2051.09242 298.596,2050.32922 C298.214,2050.05786 297.806,2049.81943 297.375,2049.61691 C298.589,2048.50254 299.264,2046.83249 298.903,2044.97588"
+                        id="profile_image_plus_round-[#1327]"></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <img id="profile-picture2" src="../main/media/icons/github-mark-white.png" alt="">
+          </button>
+          <div class="profile-info">
+            <p id="fullname4"></p>
+            <p id="username4"></p>
+            <p id="email4"></p>
+          </div>
+          <button id="sign-out">Sign out</button>
+        </div>
+        <div class="full-profile-settings-container">
+          <button>Your Schools</button>
+          <button>Change Email</button>
+          <button>Change Password</button>
+        </div>
+      </div>
+
+      <div class="miscellaneous-container">
+        <h1>Miscellaneous</h1>
+        <label id="dark-theme">
+          <div>
+            <p>Dark Theme Mode <span class="NOTICE-EXP">EXPERIMENTAL</span></p>
+            <b class="label-description">Incase your eyes doesn</b>
+          </div>
+          <div class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </div>
+        </label>
+        <label id="">
+          <p>Table Compact<span class="NOTICE-EXP">EXPERIMENTAL</span></p>
+          <div class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </div>
+        </label>
+        <p class="SOON">Some features will be cuming soon..</p>
+
+      </div>
+
+      <div class="app-info">
+        <p>QR Attendy ALPHA <br>0.1.0-a3</p>
+        <p>© 2025 · All rights reserved</p>
+        <p>Licensed under AGPL-3.0</p>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="loading-interface-dash">
+    <img src="../main/media/icons/LOGO-T.png" alt="">
+  </div>
+
+  <div id="confirm-sign-out-modal">
+    <div class="card">
+      <h3>Confirm sign out</h3>
+      <p>Are you sure you want to sign out? make sure you've backup everything and remember your password before singing
+        out</p>
+      <div class="actions">
+        <button id="confirm-sign-out-no" class="btn-cancel">Cancel</button>
+        <button id="confirm-sign-out-yes" class="btn-danger">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="camera-activation-container">
+
+    <div class="absolute-camera-container">
+      <button id="close-USER">✕</button>
+      <div class="the-camera">
+        <div class="camera-controls">
+          <label for="camera-select">Camera:</label>
+          <select id="camera-select"></select>
+        </div>
+        <div id="reader"></div>
+        <div id="scan-result"></div>
+      </div>
+
+      <div class="table-result-student">
+        <table>
+          <caption>Results:</caption>
+          <thead>
+            <tr>
+              <th>Fullname</th>
+              <th>Time In</th>
+              <th>Section</th>
+            </tr>
+          </thead>
+          <tbody id="new-added-students">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+<script src="../main/Scripts/dependency/excel-gobrtbrt-allinone.js"></script>
+<script src="../main/Scripts/dependency/html5-qrcode.min.js"></script>
+
+<script src="../main/Scripts/dashboard/container.js"></script>
+<script type="module" src="../main/Scripts/dashboard/data/QRscan.js"></script>
+<!-- data.js is commented out during migration/testing. Use dashboardController module instead. -->
+<!-- <script src="../main/Scripts/dashboard/data.js"></script> -->
+<script type="module" src="../main/Scripts/dashboard/data/dashboardController.js"></script>
+<script src="../main/Scripts/source.js"></script>
+<script src="../main/Scripts/dashboard/sidebar.js"></script>
+<script src="../main/Scripts/dashboard/graph.js"></script>
+<script src="../main/Scripts/dashboard/calendar.js"></script>
+<script type="module" src="../main/Scripts/dashboard/data/calendarAttendance.js"></script>
+<script src="../source/render.js"></script>
+
+
+</html>
