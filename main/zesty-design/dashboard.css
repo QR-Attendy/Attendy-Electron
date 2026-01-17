@@ -894,15 +894,17 @@ tbody tr:last-child td:last-child {
         .option-caption {
           display: flex;
           align-items: center;
+          justify-content: center;
+          padding: 10px;
 
           button {
             cursor: pointer;
             transition: all 300ms ease-in-out;
             float: left;
-            border: none;
-            background-color: transparent;
+            border-radius: 10px;
             height: inherit;
-            padding: 15px;
+            padding: 10px;
+            margin: 10px;
 
             font-size: 15px;
             font-weight: 700;
@@ -925,7 +927,11 @@ tbody tr:last-child td:last-child {
               font-weight: 700;
             }
           }
+          .search-container {
+            margin-left: auto;
+          }
         }
+
       }
     }
   }

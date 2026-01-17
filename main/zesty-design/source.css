@@ -146,6 +146,10 @@ main {
   --dayCell-selected-bg-clr: linear-gradient(180deg, #eaf4ff, #d8eefe);
 
   --listStudentCalendar-option-bg-clr: #e4e4e4;
+  --listStudentCalendar-btn-clr: #fcfcfc;
+  --listStudentCalendar-btn-border-clr: #c2c2c2;
+  --listStudentCalendar-btn-hover-clr: #8e8e8e;
+  --listStudentCalendar-txt-hover-clr: #79ff84;
 }
 
 /* =========================================================== */
@@ -323,6 +327,25 @@ table {
 
   .option-caption {
     background-color: var(--listStudentCalendar-option-bg-clr);
+
+    button {
+      background-color: var(--listStudentCalendar-btn-clr);
+      border: 1px solid var(--listStudentCalendar-btn-border-clr);
+
+      &:hover {
+        background-color: var(--listStudentCalendar-btn-hover-clr);
+        color: var(--listStudentCalendar-txt-hover-clr);
+
+        svg {
+          color: var(--listStudentCalendar-txt-hover-clr);
+          path {
+          fill: var(--listStudentCalendar-txt-hover-clr);
+          stroke: var(--listStudentCalendar-txt-hover-clr);
+          }
+        }
+        
+      }
+    }
   }
 }
 
