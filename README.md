@@ -12,5 +12,4 @@
 - Electron-based desktop client (packaged alpha available).
 - API/backend components for attendance and QR management.
 
-### Upcoming features:
-- using Frameworks (Tailwind css & Alpine.js)
+
