@@ -209,7 +209,7 @@
 
       <menu>
         <div class="tableOf-Students">
-          <h1>Recent Students</h1>
+          <h1 style="margin-bottom: 20px;">Recent Students</h1>
           <table>
             <thead>
               <tr>
@@ -271,13 +271,15 @@
 
         <div class="attendance-table-container">
           <div class="options">
-            <button id="add-section">add Section</button>
+            <button id="add-student">add Student</button>
 
-            <div class="Out-setter">
-              <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="select-all-rows">
-                Select All</label>
-              <label style="margin-left:8px">Set Time Out:</label>
-              <input type="time" id="timeout-time" />
+            <div class="out-setter">
+              <div>
+                <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="select-all-rows">
+                  Select All</label>
+                <label style="margin-left:8px">Set Time Out:</label>
+                <input type="time" id="timeout-time" />
+              </div>
               <button id="apply-timeout-btn">Apply Time Out</button>
             </div>
           </div>
@@ -523,7 +525,7 @@
         <label id="dark-theme">
           <div>
             <p>Dark Theme Mode <span class="NOTICE-EXP">EXPERIMENTAL</span></p>
-            <b class="label-description">Incase your eyes doesn</b>
+            <b class="label-description">Incase your eyes is about to blow up atleast</b>
           </div>
           <div class="switch">
             <input type="checkbox">
@@ -531,7 +533,10 @@
           </div>
         </label>
         <label id="">
-          <p>Table Compact<span class="NOTICE-EXP">EXPERIMENTAL</span></p>
+          <div>
+            <p>Table Compact<span class="NOTICE-EXP">EXPERIMENTAL</span></p>
+            <b class="label-description">make the table appearance look like Excel type shit</b>
+          </div>
           <div class="switch">
             <input type="checkbox">
             <span class="slider round"></span>
@@ -604,15 +609,12 @@
 
 <script src="../main/Scripts/dashboard/container.js"></script>
 <script type="module" src="../main/Scripts/dashboard/data/QRscan.js"></script>
-<!-- data.js is commented out during migration/testing. Use dashboardController module instead. -->
-<!-- <script src="../main/Scripts/dashboard/data.js"></script> -->
 <script type="module" src="../main/Scripts/dashboard/data/dashboardController.js"></script>
+<script src="../main/Scripts/dashboard/data/calendarAttendance.js"></script>
 <script src="../main/Scripts/source.js"></script>
 <script src="../main/Scripts/dashboard/sidebar.js"></script>
 <script src="../main/Scripts/dashboard/graph.js"></script>
 <script src="../main/Scripts/dashboard/calendar.js"></script>
-<script type="module" src="../main/Scripts/dashboard/data/calendarAttendance.js"></script>
 <script src="../source/render.js"></script>
-
 
 </html>
