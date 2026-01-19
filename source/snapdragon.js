@@ -18,12 +18,12 @@ const store = new Store();
 * to use it during development IF YOU ARE CONTRIBUTING TO THE PROJECT
 */
 
-// import { watchRenderer } from './watcher.js';
-// watchRenderer([
-//   path.join(__dirname, '../main/dash.html'),
-//   path.join(__dirname, '../main/zesty-design/dashboard.css'),
-//   path.join(__dirname, '../main/zesty-design/source.css'),
-// ]);
+import { watchRenderer } from './watcher.js';
+watchRenderer([
+  path.join(__dirname, '../main/dash.html'),
+  path.join(__dirname, '../main/zesty-design/dashboard.css'),
+  path.join(__dirname, '../main/zesty-design/source.css'),
+]);
 
 // ==========//
 

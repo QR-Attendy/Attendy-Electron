@@ -49,3 +49,36 @@ window.addEventListener('hashchange', () => {
 document.addEventListener('DOMContentLoaded', () => {
   showContainerForHash(window.location.hash || '#dashboard');
 });
+
+// Make profile-info buttons navigate to settings and close sidebar
+document.addEventListener('DOMContentLoaded', () => {
+  const navToSettings = (e) => {
+    e?.preventDefault();
+    // update hash to trigger existing handlers
+    window.location.hash = '#settings';
+    // ensure settings container shows immediately
+    try { showContainerForHash('#settings'); } catch (e) { }
+    // close sidebar and hide labels
+    const sidebar = document.getElementById('side-bar');
+    const toggleButton = document.getElementById('toggle-btn');
+    const sub = document.querySelector('.sub');
+    const sub2 = document.querySelector('.sub2');
+    if (sidebar && !sidebar.classList.contains('close')) sidebar.classList.add('close');
+    if (toggleButton && !toggleButton.classList.contains('rotate')) toggleButton.classList.add('rotate');
+    if (sub) sub.classList.add('hide-text');
+    if (sub2) sub2.classList.add('hide-text');
+    // close any opened sub-menus
+    if (sidebar) {
+      Array.from(sidebar.getElementsByClassName('show')).forEach(ul => {
+        ul.classList.remove('show');
+        if (ul.previousElementSibling) ul.previousElementSibling.classList.remove('rotate');
+      });
+    }
+    // update active nav if available
+    if (typeof setActiveNav === 'function') setActiveNav();
+  };
+
+  document.querySelectorAll('#opn-pf-info').forEach(btn => {
+    btn.addEventListener('click', navToSettings);
+  });
+});

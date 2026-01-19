@@ -106,7 +106,7 @@ export function renderTodayAttendance() {
   const rows = attendanceStore.getTodayRows();
 
   // compute cheap fingerprint for rows
-  const parts = rows.map(r => `${r.id}|${(r.status || '')}|${r.timestamp || r.time_in || ''}`);
+  const parts = rows.map(r => `${r.id}|${(r.status || '')}|${r.timestamp || r.time_in || ''}|${r.time_out || ''}`);
   const fp = parts.join('\n');
   if (fp === _lastFingerprint) return; // nothing changed
   _lastFingerprint = fp;

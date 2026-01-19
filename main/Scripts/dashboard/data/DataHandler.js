@@ -107,7 +107,7 @@
         }
         if (!confirm(`Delete ${ids.length} selected row(s)? This cannot be undone.`)) return;
         try {
-          const mod = await import('./dashboard/data/attendanceStore.js');
+          const mod = await import('./attendanceStore.js');
           const store = mod.default;
           for (const id of ids) {
             await store.deleteRow(id);
@@ -143,11 +143,16 @@
             return;
           }
           await window.attendyAPI.setTimeoutForRows(ids, iso);
-          // refresh store if available
+          // update local store cache so UI updates immediately
           try {
-            const mod = await import('./dashboard/data/attendanceStore.js');
+            const mod = await import('./attendanceStore.js');
             const store = mod.default;
-            await store.refreshAttendance();
+            if (typeof store.setTimeoutForRows === 'function') {
+              await store.setTimeoutForRows(ids, iso);
+            } else {
+              // fallback to refresh if available
+              try { await store.refreshAttendance(); } catch (e) { /* ignore */ }
+            }
           } catch (e) { /* ignore */ }
         } catch (e) {
           console.error('apply timeout failed', e);
@@ -155,6 +160,179 @@
         }
       });
     }
+
+    // Right-click menu handling for table rows
+    const rMenu = document.getElementById('R-clk-menu');
+    function hideRMenu() {
+      if (!rMenu) return;
+      rMenu.style.display = 'none';
+      rMenu.innerHTML = '';
+    }
+
+    function posMenu(x, y) {
+      if (!rMenu) return;
+      rMenu.style.left = x + 'px';
+      rMenu.style.top = y + 'px';
+      rMenu.style.display = 'block';
+    }
+
+    async function buildMenuFor(tbodyId, tr) {
+      if (!rMenu || !tr) return;
+      const id = Number(tr.getAttribute('data-id')) || null;
+      // fetch store row if available
+      let storeRow = null;
+      try {
+        const mod = await import('./attendanceStore.js');
+        const store = mod.default;
+        if (id && typeof store._internals === 'function') {
+          // try to read cache via public methods
+          const rows = store.getTodayRows().concat(store.getRecent ? store.getRecent(50) : []);
+          storeRow = rows.find(r => Number(r.id) === id) || null;
+        }
+      } catch (e) { /* ignore */ }
+
+      const makeBtn = (txt, cls) => `<button class="rcm-btn ${cls}">${txt}</button>`;
+      let html = '';
+
+      if (tbodyId === 'new-added-students' && id) {
+        html += makeBtn('Delete', 'delete');
+        html += makeBtn('Check Info', 'info');
+      } else if (tbodyId === 'attendance-specDate-tbody' && id) {
+        html += makeBtn('Delete', 'delete');
+        html += makeBtn('Set Status', 'set-status');
+        html += makeBtn('Set Time Out', 'set-timeout');
+        html += makeBtn('Set Time In', 'set-timein');
+        html += makeBtn('Check Info', 'info');
+      } else if (tbodyId === 'attendance-tbody' && id) {
+        html += makeBtn('Edit', 'edit');
+        html += makeBtn('Delete', 'delete');
+        html += makeBtn('Set Time Out', 'set-timeout');
+        html += makeBtn('Set Time In', 'set-timein');
+        html += makeBtn('Check Info', 'info');
+      } else if (tbodyId === 'recent-students-tbody' && id) {
+        // recent students list: minimal options
+        html += makeBtn('Delete', 'delete');
+        html += makeBtn('Check Info', 'info');
+      } else if (!html && id) {
+        // fallback for other tbodies that contain row data
+        html += makeBtn('Delete', 'delete');
+        html += makeBtn('Check Info', 'info');
+      }
+
+      if (!html) {
+        rMenu.innerHTML = '';
+        return false;
+      }
+
+      rMenu.innerHTML = html;
+
+      // attach listeners
+      rMenu.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+          const cls = btn.className || '';
+          hideRMenu();
+          try {
+            const mod = await import('./attendanceStore.js');
+            const store = mod.default;
+            if (cls.includes('delete')) {
+              if (!confirm('Delete this row? This cannot be undone.')) return;
+              if (id) await store.deleteRow(id);
+              return;
+            }
+            if (cls.includes('info')) {
+              // show quick info
+              const text = storeRow ? JSON.stringify(storeRow, null, 2) : (tr ? tr.textContent : 'No info');
+              alert(text);
+              return;
+            }
+            if (cls.includes('set-status')) {
+              const status = prompt('Enter status (Present/Late/Excused/Absent):  ');
+              if (!status) return;
+              if (id) await store.updateStatus(id, status);
+              return;
+            }
+            if (cls.includes('set-timeout')) {
+              const time = prompt('Enter time (HH:MM) for Time Out:');
+              if (!time) return;
+              const [hh, mm] = time.split(':').map(Number);
+              const d = new Date();
+              d.setHours(hh || 0, mm || 0, 0, 0);
+              const iso = d.toISOString();
+              if (window.attendyAPI && typeof window.attendyAPI.setTimeoutForRow === 'function') {
+                try { await window.attendyAPI.setTimeoutForRow(id, iso); } catch (e) { /* ignore */ }
+              }
+              // update local cache
+              if (id && typeof store.setTimeoutForRows === 'function') {
+                await store.setTimeoutForRows([id], iso);
+              }
+              return;
+            }
+            if (cls.includes('set-timein')) {
+              const time = prompt('Enter time (HH:MM) for Time In:');
+              if (!time) return;
+              const [hh, mm] = time.split(':').map(Number);
+              const d = new Date();
+              d.setHours(hh || 0, mm || 0, 0, 0);
+              const iso = d.toISOString();
+              // update local cache
+              if (id && typeof store.setTimeInForRow === 'function') {
+                await store.setTimeInForRow(id, iso);
+              }
+              // no guaranteed backend API for time_in; ignore backend call
+              return;
+            }
+            if (cls.includes('edit')) {
+              // basic edit: change fullname via prompt
+              const current = tr && tr.children[2] ? tr.children[2].textContent.trim() : '';
+              const name = prompt('Edit fullname:', current);
+              if (!name) return;
+              // naive DOM update for immediate feedback
+              try { if (tr && tr.children[2]) tr.children[2].textContent = name; } catch (e) { }
+              // update cached store if available
+              if (id) {
+                try {
+                  const mod2 = await import('./attendanceStore.js');
+                  const store2 = mod2.default;
+                  // try to update in cache directly
+                  const rows = store2.getTodayRows().concat(store2.getRecent ? store2.getRecent(200) : []);
+                  const row = rows.find(r => Number(r.id) === id);
+                  if (row) { row.student_fullname = name; if (typeof store2._internals === 'function') { store2._internals(); } }
+                } catch (e) { /* ignore */ }
+              }
+              return;
+            }
+          } catch (e) {
+            console.error('right-click action failed', e);
+          }
+        });
+      });
+      return true;
+    }
+
+    // global contextmenu handler - delegate to rows
+    document.addEventListener('contextmenu', (ev) => {
+      const tr = ev.target.closest && ev.target.closest('tr');
+      if (!tr) { hideRMenu(); return; }
+      const tbody = tr.closest && tr.closest('tbody');
+      if (!tbody) { hideRMenu(); return; }
+      const tbid = tbody.id;
+      ev.preventDefault();
+      buildMenuFor(tbid, tr).then((show) => {
+        if (show) posMenu(ev.pageX, ev.pageY);
+        else hideRMenu();
+      }).catch(() => hideRMenu());
+    });
+
+    // hide on any click outside
+    document.addEventListener('click', (ev) => {
+      if (!rMenu) return;
+      if (ev.target.closest && ev.target.closest('#R-clk-menu')) return;
+      hideRMenu();
+    });
+
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') hideRMenu();
+    });
   });
 })();
 

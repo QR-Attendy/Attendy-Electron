@@ -169,6 +169,11 @@ async function renderSelectedDateAttendance(dateInput) {
     } else {
       for (const r of records) {
         const tr = document.createElement('tr');
+        // expose id on row if available so other UI handlers can use it
+        if (r && (r.id || r._id || r.row_id)) {
+          const rid = r.id || r._id || r.row_id;
+          try { tr.setAttribute('data-id', String(rid)); } catch (e) { }
+        }
         const fullname = r.student_fullname || r.fullname || r.name || '';
         const section = r.section || r.student_section || '';
         const status = r.status || '';

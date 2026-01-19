@@ -36,7 +36,7 @@ main {
   }
 
   .absolute-camera-container {
-    
+
     position: relative;
     width: 100%;
     height: 100%;
@@ -80,14 +80,15 @@ main {
         width: 650px;
       }
     }
+
     .table-result-student {
-    background-color: red;
+      background-color: red;
 
       table {
         width: 500px;
         height: 200px;
         border-radius: 15px;
-      } 
+      }
     }
 
 
@@ -877,8 +878,10 @@ tbody tr:last-child td:last-child {
       flex-direction: column;
       width: 100%;
       align-items: center;
+
       .calendar-toolbar {
         margin-bottom: 15px;
+
         button {
           padding: 8px;
           border-radius: 5px;
@@ -887,10 +890,11 @@ tbody tr:last-child td:last-child {
           cursor: pointer;
         }
       }
+
       .calendar-grid {
         width: 100%;
       }
-      
+
     }
 
     .the-stat {
@@ -947,6 +951,7 @@ tbody tr:last-child td:last-child {
               font-weight: 700;
             }
           }
+
           .search-container {
             margin-left: auto;
           }
@@ -1169,6 +1174,35 @@ tbody tr:last-child td:last-child {
         }
       }
 
+    }
+  }
+}
+
+.right-click-menu {
+  position: fixed;
+  display: none;
+  background: #2b2b2b;
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+  z-index: 9999;
+
+  /* width: 150px;
+  height: 150px; */
+
+  button {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
 }

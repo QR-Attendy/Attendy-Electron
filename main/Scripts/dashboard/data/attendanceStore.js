@@ -364,6 +364,42 @@ const store = (function () {
     _emitChange();
   }
 
+  async function setTimeoutForRows(ids, iso) {
+    if (!ids) return false;
+    if (!Array.isArray(ids)) ids = [ids];
+    let changed = false;
+    for (const raw of ids) {
+      const id = Number(raw);
+      if (!Number.isFinite(id)) continue;
+      const row = _indexById.get(id);
+      if (!row) continue;
+      // only update if different
+      if (row.time_out !== iso) {
+        row.time_out = iso;
+        changed = true;
+      }
+    }
+    if (changed) {
+      _recomputeCachesAndFingerprint();
+      _emitChange();
+    }
+    return changed;
+  }
+
+  async function setTimeInForRow(id, iso) {
+    if (!id) return false;
+    id = Number(id);
+    if (!Number.isFinite(id)) return false;
+    const row = _indexById.get(id);
+    if (!row) return false;
+    if (row.time_in === iso) return false;
+    row.time_in = iso;
+    // keep caches consistent
+    _recomputeCachesAndFingerprint();
+    _emitChange();
+    return true;
+  }
+
   function _computeFingerprintFromCache() {
     const parts = [];
     for (const r of _cache) {
@@ -430,6 +466,8 @@ const store = (function () {
     deleteRow,
     updateStatus,
     addRow,
+    setTimeoutForRows,
+    setTimeInForRow,
     subscribe,
     // expose internal for debugging
     _internals: () => ({ cacheSize: _cache.length })
