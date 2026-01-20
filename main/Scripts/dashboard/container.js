@@ -85,7 +85,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Notification panel toggle
 const ntfPanel = document.getElementById('ntf-panel');
-function toggleNtfPanel() {
-  if (ntfPanel) ntfPanel.classList.toggle('show');
+const ntfList = document.getElementById('ntf-list');
+const noNtf = document.getElementById('no-ntf');
+
+function updateNtfMessage() {
+  if (!ntfPanel) return;
+  // determine if there are any notification items
+  const list = ntfList || ntfPanel.querySelector('#ntf-list');
+  const no = noNtf || ntfPanel.querySelector('#no-ntf');
+  if (!list || !no) return;
+  if (list.children.length === 0) {
+    no.style.display = 'block';
+  } else {
+    no.style.display = 'none';
+  }
 }
+
+function ntfPanelPos(el) {
+  if (!ntfPanel) return;
+  const ntfIcon = el || document.querySelector('.notification-btn');
+  if (!ntfIcon) return;
+  const rect = ntfIcon.getBoundingClientRect();
+  const x = rect.left + window.scrollX - ntfPanel.offsetWidth + rect.width;
+  const y = rect.top + window.scrollY + rect.height + 10; // 10px offset below icon
+  ntfPanel.style.left = x + 'px';
+  ntfPanel.style.top = y + 'px';
+  ntfPanel.style.display = 'block';
+}
+
+// attach handler to all notification buttons (supports multiple instances)
+const ntfButtons = document.querySelectorAll('.notification-btn');
+if (ntfButtons && ntfButtons.length) {
+  ntfButtons.forEach(btn => {
+    btn.addEventListener('click', function (e) {
+      if (ntfPanel) ntfPanel.classList.toggle('show');
+      // update fallback message visibility
+      try { updateNtfMessage(); } catch (err) { }
+      // position panel relative to the clicked button
+      try { ntfPanelPos(btn); } catch (err) { }
+    });
+  });
+} else {
+  // fallback for single element with id (legacy)
+  const single = document.getElementById('notification');
+  if (single) {
+    single.addEventListener('click', function () {
+      if (ntfPanel) ntfPanel.classList.toggle('show');
+      try { updateNtfMessage(); } catch (err) { }
+      try { ntfPanelPos(single); } catch (err) { }
+    });
+  }
+}
+
+// ensure fallback message correct on load
+document.addEventListener('DOMContentLoaded', () => {
+  try { updateNtfMessage(); } catch (err) { }
+});
 

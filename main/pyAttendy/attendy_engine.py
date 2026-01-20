@@ -10,6 +10,8 @@ import traceback
 import logging
 from datetime import datetime
 
+# NOTE: INSTALL A GODDAMN WAITRESS you Restless skibidi coder (message from Spades)
+
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 app.logger.setLevel(logging.INFO)

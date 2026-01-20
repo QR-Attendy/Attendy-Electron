@@ -348,7 +348,7 @@ li:hover {
     width: 30%;
     align-items: center;
 
-    #notification {
+    .notification-btn {
       margin-left: 10px;
       border: none;
       background-color: transparent;
@@ -1188,9 +1188,6 @@ tbody tr:last-child td:last-child {
   box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
   z-index: 9999;
 
-  /* width: 150px;
-  height: 150px; */
-
   button {
     display: block;
     width: 100%;
@@ -1203,6 +1200,45 @@ tbody tr:last-child td:last-child {
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Notification Panel Styles */
+.notification-panel {
+  position: fixed;
+  max-height: 400px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: none;
+  z-index: 1000;
+  width: 0;
+  height: 0;
+
+  &.show {
+    display: block;
+    width: 100px;
+    height: 200px;
+  }
+
+  .notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .notification-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .notification-message {
+      font-size: 14px;
+      color: #555;
     }
   }
 }
