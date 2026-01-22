@@ -570,7 +570,7 @@
   </div>
 
   <!-- Qr Scanner Container -->
-  <div class="camera-activation-container activate">
+  <div class="camera-activation-container">
     <div class="absolute-camera-container">
       <button id="close-USER">✕</button>
 
@@ -604,6 +604,40 @@
   <!-- Right click menu -->
   <div id="R-clk-menu" class="right-click-menu">
 
+  </div>
+
+  <div class="time-setter-panel">
+    <div class="time-setter-out-panel">
+      <label for="timeout-time-setter">Set Time Out:</label>
+      <input type="time" id="timeout-time-setter" />
+      <button id="apply-timeout-btn-rc">Apply Time Out</button>
+    </div>
+    <div class="time-setter-in-panel">
+      <label for="timein-time-setter">Set Time In:</label>
+      <input type="time" id="timein-time-setter" />
+      <button id="apply-timein-btn-rc">Apply Time In</button>
+    </div>
+  </div>
+
+  <div class="add-student-panel">
+    <div class="add-student-card">
+      <h2>Add Student</h2>
+      <form id="add-student-form">
+        <label for="student-fullname">Fullname:</label>
+        <input type="text" id="student-fullname" name="student-fullname" required>
+
+        <label for="student-username">Username:</label>
+        <input type="text" id="student-username" name="student-username" required>
+
+        <label for="student-section">Section:</label>
+        <input type="text" id="student-section" name="student-section" required>
+
+        <div class="form-actions">
+          <button type="button" id="cancel-add-student">Cancel</button>
+          <button type="submit">Add Student</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Notification Panel -->

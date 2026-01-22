@@ -98,6 +98,98 @@
     // initial state
     updateDownloadState();
 
+    // Time setter panel (replacement for prompt-based time edits)
+    const timeSetterPanel = document.querySelector('.time-setter-panel');
+    const timeoutSetterInput = document.getElementById('timeout-time-setter');
+    const timeinSetterInput = document.getElementById('timein-time-setter');
+    const applyTimeoutRcBtn = document.getElementById('apply-timeout-btn-rc');
+    const applyTimeinRcBtn = document.getElementById('apply-timein-btn-rc');
+
+    function showTimeSetter(action, ids, defaultTime) {
+      if (!timeSetterPanel) return;
+      timeSetterPanel.style.display = 'block';
+      
+      timeSetterPanel.dataset.action = action;
+      timeSetterPanel.dataset.ids = Array.isArray(ids) ? ids.join(',') : (ids || '');
+      if ((action === 'set-timeout' || action === 'apply-timeout') && timeoutSetterInput) {
+        timeoutSetterInput.value = defaultTime || '';
+      }
+      if ((action === 'set-timein' || action === 'apply-timein') && timeinSetterInput) {
+        timeinSetterInput.value = defaultTime || '';
+      }
+    }
+
+    function hideTimeSetter() {
+      if (!timeSetterPanel) return;
+      timeSetterPanel.style.display = 'none';
+
+      delete timeSetterPanel.dataset.action;
+      delete timeSetterPanel.dataset.ids;
+    }
+
+    // apply-timeout from right-click panel
+    if (applyTimeoutRcBtn) {
+      applyTimeoutRcBtn.addEventListener('click', async () => {
+        if (!timeSetterPanel) return;
+        const ids = (timeSetterPanel.dataset.ids || '').split(',').map(Number).filter(Boolean);
+        if (!ids.length) { alert('No rows selected'); return; }
+        const val = timeoutSetterInput ? timeoutSetterInput.value : null;
+        if (!val) { alert('Select a time first'); return; }
+        const [hh, mm] = val.split(':').map(Number);
+        const d = new Date();
+        d.setHours(hh || 0, mm || 0, 0, 0);
+        const iso = d.toISOString();
+        try {
+          if (window.attendyAPI && typeof window.attendyAPI.setTimeoutForRows === 'function') {
+            await window.attendyAPI.setTimeoutForRows(ids, iso);
+          }
+          try {
+            const mod = await import('./attendanceStore.js');
+            const store = mod.default;
+            if (typeof store.setTimeoutForRows === 'function') {
+              await store.setTimeoutForRows(ids, iso);
+            }
+          } catch (e) { /* ignore */ }
+        } catch (e) {
+          console.error('apply timeout (rc) failed', e);
+          alert('Failed to apply timeout');
+        } finally {
+          hideTimeSetter();
+        }
+      });
+    }
+
+    // apply-timein from right-click panel
+    if (applyTimeinRcBtn) {
+      applyTimeinRcBtn.addEventListener('click', async () => {
+        if (!timeSetterPanel) return;
+        const ids = (timeSetterPanel.dataset.ids || '').split(',').map(Number).filter(Boolean);
+        if (!ids.length) { alert('No rows selected'); return; }
+        const val = timeinSetterInput ? timeinSetterInput.value : null;
+        if (!val) { alert('Select a time first'); return; }
+        const [hh, mm] = val.split(':').map(Number);
+        const d = new Date();
+        d.setHours(hh || 0, mm || 0, 0, 0);
+        const iso = d.toISOString();
+        try {
+          try {
+            const mod = await import('./attendanceStore.js');
+            const store = mod.default;
+            if (ids.length === 1 && typeof store.setTimeInForRow === 'function') {
+              await store.setTimeInForRow(ids[0], iso);
+            } else if (ids.length && typeof store.setTimeInForRow === 'function') {
+              for (const id of ids) await store.setTimeInForRow(id, iso);
+            }
+          } catch (e) { /* ignore */ }
+        } catch (e) {
+          console.error('apply timein (rc) failed', e);
+          alert('Failed to apply time in');
+        } finally {
+          hideTimeSetter();
+        }
+      });
+    }
+
     if (deleteBtn) {
       deleteBtn.addEventListener('click', async () => {
         const ids = getSelectedIds();
@@ -128,6 +220,11 @@
         }
         const timeInput = document.getElementById('timeout-time');
         if (!timeInput || !timeInput.value) {
+          // if there's a dedicated panel, open it for bulk apply
+          if (typeof showTimeSetter === 'function' && timeSetterPanel) {
+            showTimeSetter('apply-timeout', ids);
+            return;
+          }
           alert('Please select a time first');
           return;
         }
@@ -168,6 +265,7 @@
       rMenu.style.display = 'none';
       rMenu.innerHTML = '';
     }
+
 
     function posMenu(x, y) {
       if (!rMenu) return;
@@ -252,33 +350,31 @@
               return;
             }
             if (cls.includes('set-timeout')) {
-              const time = prompt('Enter time (HH:MM) for Time Out:');
-              if (!time) return;
-              const [hh, mm] = time.split(':').map(Number);
-              const d = new Date();
-              d.setHours(hh || 0, mm || 0, 0, 0);
-              const iso = d.toISOString();
-              if (window.attendyAPI && typeof window.attendyAPI.setTimeoutForRow === 'function') {
-                try { await window.attendyAPI.setTimeoutForRow(id, iso); } catch (e) { /* ignore */ }
-              }
-              // update local cache
-              if (id && typeof store.setTimeoutForRows === 'function') {
-                await store.setTimeoutForRows([id], iso);
-              }
+              document.querySelector('.time-setter-in-panel').style.display = 'none';
+              document.querySelector('.time-setter-out-panel').style.display = 'block';
+              try {
+                const existing = tr && tr.querySelector && tr.querySelector('.times-select');
+                let defaultTime = '';
+                if (existing) {
+                  const opt = existing.options && existing.options[1] && existing.options[1].textContent || '';
+                  defaultTime = opt.replace(/^[^0-9]*/, '').trim();
+                }
+                showTimeSetter('set-timeout', id ? [id] : [], defaultTime);
+              } catch (e) { /* ignore */ }
               return;
             }
             if (cls.includes('set-timein')) {
-              const time = prompt('Enter time (HH:MM) for Time In:');
-              if (!time) return;
-              const [hh, mm] = time.split(':').map(Number);
-              const d = new Date();
-              d.setHours(hh || 0, mm || 0, 0, 0);
-              const iso = d.toISOString();
-              // update local cache
-              if (id && typeof store.setTimeInForRow === 'function') {
-                await store.setTimeInForRow(id, iso);
-              }
-              // no guaranteed backend API for time_in; ignore backend call
+              document.querySelector('.time-setter-in-panel').style.display = 'block';
+              document.querySelector('.time-setter-out-panel').style.display = 'none';
+              try {
+                const existing = tr && tr.querySelector && tr.querySelector('.times-select');
+                let defaultTime = '';
+                if (existing) {
+                  const opt = existing.options && existing.options[0] && existing.options[0].textContent || '';
+                  defaultTime = opt.replace(/^[^0-9]*/, '').trim();
+                }
+                showTimeSetter('set-timein', id ? [id] : [], defaultTime);
+              } catch (e) { /* ignore */ }
               return;
             }
             if (cls.includes('edit')) {

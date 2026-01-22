@@ -1178,6 +1178,7 @@ tbody tr:last-child td:last-child {
   }
 }
 
+/* Panels */
 .right-click-menu {
   position: fixed;
   display: none;
@@ -1239,6 +1240,71 @@ tbody tr:last-child td:last-child {
     .notification-message {
       font-size: 14px;
       color: #555;
+    }
+  }
+}
+
+.time-setter-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: none;
+  z-index: 1001;
+
+  &.show {
+    display: block;
+  }
+
+  .time-setter-out-panel {
+    display: none;
+  }
+
+  .time-setter-in-panel {
+    display: none;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .time-inputs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    button {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-apply {
+      background: #4CAF50;
+      color: #fff;
+    }
+
+    .btn-cancel {
+      background: #eee;
+      color: #333;
     }
   }
 }
