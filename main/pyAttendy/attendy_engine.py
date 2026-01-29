@@ -352,6 +352,73 @@ def set_timeout():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/edit_attendance', methods=['POST'])
+def edit_attendance():
+    """Edit one attendance row. Accepts JSON containing `id` and any of the
+    updatable fields: `student_fullname`, `student_username`, `student_section`,
+    `role`, `status`, `time_in`, `time_out`, `timestamp`.
+
+    Example payload:
+      { "id": 123, "student_fullname": "New Name", "student_username": "user1", "student_section": "A1", "time_in": "2026-01-26T09:00:00" }
+    """
+    try:
+        data = request.get_json() or {}
+        attendance_id = data.get('id')
+        if attendance_id is None:
+            return jsonify({'error': 'id required'}), 400
+
+        # Map accepted input keys to attendance table columns
+        fields_map = {
+            'student_fullname': 'student_fullname',
+            'student_username': 'student_username',
+            'student_section': 'student_section',
+            'role': 'role',
+            'status': 'status',
+            'time_in': 'time_in',
+            'time_out': 'time_out',
+            'timestamp': 'timestamp'
+        }
+
+        updates = []
+        params = []
+        for key, col in fields_map.items():
+            if key in data and data[key] is not None:
+                val = data[key]
+                # Normalize usernames: strip leading @ and lowercase
+                if key == 'student_username':
+                    try:
+                        v = str(val).strip()
+                        if v.startswith('@'):
+                            v = v.lstrip('@')
+                        v = v.lower()
+                        val = v
+                    except Exception:
+                        pass
+                updates.append(f"{col} = ?")
+                params.append(val)
+
+        if not updates:
+            return jsonify({'error': 'no updatable fields provided'}), 400
+
+        params.append(attendance_id)
+        query = f"UPDATE attendance SET {', '.join(updates)} WHERE id = ?"
+
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute(query, params)
+        conn.commit()
+        updated = c.rowcount
+        conn.close()
+
+        app.logger.info('edit_attendance: id=%s updated=%s', attendance_id, updated)
+        return jsonify({'ok': True, 'updated': updated})
+
+    except Exception as e:
+        tb = traceback.format_exc()
+        app.logger.error('Error in /edit_attendance: %s\n%s', e, tb)
+        return jsonify({'error': str(e)}), 500
+
+
 # `/delete_attendance_for_user` (dev helper) removed.
 
 # NOTE: Dev-only endpoints have been removed from the public surface to reduce

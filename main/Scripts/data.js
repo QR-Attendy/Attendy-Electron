@@ -38,3 +38,39 @@
     }
   });
 })();
+
+// Compact table toggle: similar behavior to dark mode, persisted in localStorage
+(() => {
+  const storageKey = 'compactTable';
+  const checkbox = document.querySelector('#compact-table input[type="checkbox"]');
+  const compactClass = 'compact-table';
+
+  function setCompactMode(active) {
+    if (active) {
+      document.documentElement.classList.add(compactClass);
+      if (checkbox) checkbox.checked = true;
+      localStorage.setItem(storageKey, 'active');
+    } else {
+      document.documentElement.classList.remove(compactClass);
+      if (checkbox) checkbox.checked = false;
+      localStorage.removeItem(storageKey);
+    }
+  }
+
+  // Expose global toggle if needed elsewhere
+  window.toggleCompactMode = setCompactMode;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem(storageKey);
+    if (checkbox) {
+      if (saved === 'active') setCompactMode(true);
+      else setCompactMode(false);
+
+      checkbox.addEventListener('change', () => {
+        setCompactMode(checkbox.checked);
+      });
+    } else {
+      if (saved === 'active') setCompactMode(true);
+    }
+  });
+})();

@@ -1,10 +1,10 @@
 {
   "name": "attendy",
-  "productName": "QR Attendy",
-  "version": "1.0.0",
-  "description": "QR attendance system",
+  "productName": "Attendy",
+  "version": "0.1.0-a3",
+  "description": "ALPHA",
   "license": "AGPL-3.0-only",
-  "author": "ace",
+  "author": "ÆCE",
   "type": "module",
   "main": "source/snapdragon.js",
   "scripts": {

@@ -2,10 +2,18 @@ import attendanceStore from './attendanceStore.js';
 
 let _lastFingerprint = '';
 
-export function renderRecentStudents(limit = 8) {
+export function renderRecentStudents(section = null, limit = 10) {
   const tbody = document.getElementById('recent-students-tbody');
   if (!tbody) return;
-  const rows = attendanceStore.getRecent(limit);
+  // request a very large recent window so we effectively show all recent rows
+  let rows = attendanceStore.getRecent ? attendanceStore.getRecent(1000000) : [];
+  if (section && section !== 'all') {
+    const secLower = String(section || '').toLowerCase();
+    rows = rows.filter(r => {
+      const sec = (r.student_section || r.section || r.section_name || '').toString().trim().toLowerCase();
+      return sec === secLower;
+    });
+  }
   const parts = rows.map(r => `${r.id}|${r.student_fullname || ''}|${r.time_in || r.timestamp || ''}`);
   const fp = parts.join('\n');
   if (fp === _lastFingerprint) return;
@@ -20,3 +28,5 @@ export function renderRecentStudents(limit = 8) {
   }).join('');
   tbody.innerHTML = html;
 }
+
+export default { renderRecentStudents };

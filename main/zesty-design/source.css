@@ -154,6 +154,7 @@ main {
 
   /* dashboard */
   --dash-txt-clr: #000000;
+  --dash-txt-secondary-clr: #000000;
   --dash-inverse-txt-clr: #ffffff;
   --dash-svg-clr: #000000;
   --dash-pfCard-bg-clr: #eaeaea;
@@ -206,6 +207,7 @@ main {
 
   /* dashboard */
   --dash-txt-clr: #e6eef6;
+  --dash-txt-secondary-clr: #dadada;
   --dash-inverse-txt-clr: #0b1220;
   --dash-svg-clr: #d9e6f2;
   --dash-pfCard-bg-clr: #222222;
@@ -373,10 +375,10 @@ table {
   .options {
     background-color: var(--options-bg-clr);
 
-    #add-student {
+    #add-student,#importORexport {
 
       background-color: var(--addStudent-btn-bg-clr);
-      color: var(--dash-txt-clr);
+      color: var(--dash-txt-secondary-clr);
       border: 0.5px solid;
 
       &:hover {
@@ -453,7 +455,7 @@ table {
 .settings-container {
   color: var(--dash-txt-clr);
 
-  .miscellaneous-container {
+  .Customization-container, .Accesibility-container {
     label {
       box-shadow: -7px 7px 8px var(--shadow-label-clr);
 

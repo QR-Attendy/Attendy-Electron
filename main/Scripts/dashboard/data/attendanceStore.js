@@ -57,6 +57,7 @@ const store = (function () {
   }
 
   function _emitChange() {
+    try { console.log('attendanceStore: _emitChange - subscribers:', _subscribers.size); } catch (e) { }
     for (const cb of Array.from(_subscribers)) {
       try { cb(); } catch (e) { console.warn('subscriber error', e); }
     }
@@ -333,6 +334,7 @@ const store = (function () {
   async function addRow(rowFromServer) {
     // insert at top and update indexes
     if (!rowFromServer || !rowFromServer.id) return;
+    try { console.log('attendanceStore.addRow id=', rowFromServer.id); } catch (e) { }
     // avoid duplicates by id
     const id = Number(rowFromServer.id);
     if (_indexById.has(id)) return;

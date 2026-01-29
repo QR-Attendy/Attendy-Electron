@@ -83,7 +83,15 @@ contextBridge.exposeInMainWorld("attendyAPI", {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, status })
     }).then(res => res.json()),
-    
+
   getAttendance: () =>
     fetch("http://localhost:5005/get_attendance").then(res => res.json()),
+
+  editAttendance: (id, newData) =>
+    fetch("http://localhost:5005/edit_attendance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Object.assign({ id }, (newData || {})))
+    }).then(res => res.json()),
+    
 });

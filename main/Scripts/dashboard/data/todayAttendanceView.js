@@ -5,21 +5,29 @@ let _lastFingerprint = '';
 let _eventsAttached = false;
 let _subscribed = false;
 
+function _formatTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  if (isNaN(d)) return String(ts);
+  // produce 12-hour time without a space before AM/PM, e.g. "10:50PM"
+  const s = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+  return s.replace(/\s+/g, '');
+}
+
 function _buildRowHtml(r) {
   const fullname = r.student_fullname || r.student_username || '';
   const status = r.status || '';
-  const timestamp = r.time_in || r.timestamp || '';
-  const formattedOut = r.time_out ? new Date(r.time_out).toLocaleString() : '';
+  const timestampIN = r.time_in || r.timestamp || '';
+  const timestampOUT = r.time_out ? _formatTime(r.time_out) : '';
+  const rowSection = (r.student_section || r.section || r.section_name || r.section_attendance || '') || '';
   return `
-    <tr data-id="${r.id}">
-      <td><input type="checkbox" class="row-select" data-id="${r.id}"></td>
-      <td><button class="trash-btn" data-id="${r.id}" title="Delete row">🗑️</button></td>
+    <label for="row-select-${r.id}">
+    <tr data-id="${r.id}" data-username="${(r.student_username || r.username || '')}" data-section="${rowSection}">
+      <td class="row-checkbox-cell"><input id="row-select-${r.id}" type="checkbox" class="row-select" data-id="${r.id}"></td>
       <td>${fullname}</td>
       <td>
-        <select class="times-select">
-          <option class="option-time">Time In: ${timestamp ? new Date(timestamp).toLocaleString() : 'Unknown'}</option>
-          <option class="option-time">Time Out: ${formattedOut || 'Not set'}</option>
-        </select>
+        IN: ${timestampIN ? _formatTime(timestampIN) : 'Not Set'} <br>
+        OUT: ${timestampOUT || 'Not Set'}
       </td>
       <td>
         <select class="status-select">
@@ -30,7 +38,9 @@ function _buildRowHtml(r) {
         </select>
       </td>
     </tr>
-  `;
+</label>
+
+    `;
 }
 
 function _attachEvents(tbody) {
@@ -87,6 +97,32 @@ function _attachEvents(tbody) {
       console.warn('status update failed', e);
     }
   });
+
+  // delegated change for row-select checkboxes: toggle visual highlight
+  tbody.addEventListener('change', (ev) => {
+    try {
+      const cb = ev.target.closest && ev.target.closest('.row-select') || (ev.target.classList && ev.target.classList.contains('row-select') && ev.target);
+      if (!cb) return;
+      const tr = cb.closest && cb.closest('tr');
+      if (!tr) return;
+      if (cb.checked) tr.classList.add('row-selected'); else tr.classList.remove('row-selected');
+    } catch (e) { /* ignore */ }
+  });
+
+  // delegated click on row toggles the checkbox (but ignore clicks on interactive elements)
+  tbody.addEventListener('click', (ev) => {
+    try {
+      const tr = ev.target.closest && ev.target.closest('tr');
+      if (!tr) return;
+      // ignore clicks directly on inputs, selects, links, or buttons
+      if (ev.target.closest && (ev.target.closest('input') || ev.target.closest('select') || ev.target.closest('a') || ev.target.closest('button') || ev.target.closest('.trash-btn'))) return;
+      const cb = tr.querySelector('.row-select');
+      if (!cb) return;
+      cb.checked = !cb.checked;
+      // emit change event on checkbox so any listeners update
+      try { cb.dispatchEvent(new Event('change', { bubbles: true })); } catch (e) { /* ignore */ }
+    } catch (e) { /* ignore */ }
+  });
 }
 
 // subscribe to store changes to ensure view stays in sync
@@ -132,3 +168,5 @@ export function renderTodayAttendance() {
     console.warn('update counters failed', e);
   }
 }
+// expose build helper for other modules (used by add-student panel)
+export { _buildRowHtml as buildRowHtml };

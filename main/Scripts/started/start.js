@@ -35,10 +35,10 @@ async function start() {
   }
 
   const timer = 1000;
-  const loading = document.querySelector('.loading-interface');
+  // const loading = document.querySelector('.loading-interface');
 
-  loading.style.opacity = '1';
-  loading.style.zIndex = '100';
+  // loading.style.opacity = '1';
+  // loading.style.zIndex = '100';
 
   await new Promise(resolve => setTimeout(resolve, timer));
 

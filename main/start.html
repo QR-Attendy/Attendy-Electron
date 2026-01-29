@@ -5,37 +5,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../main/zesty-design/start.css">
-  <link rel="stylesheet" href="../main/zesty-design/index.css">
+  <link rel="stylesheet" href="../main/zesty-design/source.css">
   <link rel="stylesheet" href="../main/zesty-design/animeEngine.css">
 
   <title>Attendy - Let's get started</title>
 </head>
 
 <body>
-  <div class="notice-alpha">
-    <p>Some features are not available yet as this app is on ALPHA</p>
-  </div>
   <!--START Custom Title Bar (ELECTRON)-->
-  <div class="titlebar" id="titlebar">
-    <img src="../package/media/LOGO_transparent.png" alt="logo">
-    <div id="title">Attendy - Let's get started</div>
-    <div class="controls">
-      <button id="minimize"></button>
-      <button id="close"></button>
+  <!-- START OF window controls -->
+  <div class="window">
+    <div class="title-bar-text">Dashboard</div>
+    <div class="title-bar-controls">
+      <button id="minimize">—</button>
+      <button id="close">X</button>
     </div>
-
   </div>
+  <!-- END OF window controls -->
   <!--END Custom Title Bar (ELECTRON)-->
 
   <!--main page-->
   <main>
     <div class="main-title">
-      <h1>QR Attendy</h1>
+      <img src="../main/media/icons/LOGO-T.png" alt="">
+      <h1>Attendy</h1>
       <h3>Attendance for everyone</h3>
 
       <button id="start">Let's get started!</button>
-      <p>Powered by Larry</p>
-      <p>© 2025 QR Attendy. All rights reserved.</p>
+      <p>v0.1.0-a3 ALPHA</p>
+      <p>© 2025 Attendy. All rights reserved.</p>
 
     </div>
 
@@ -58,8 +56,9 @@
           style="display:none">
 
         <button type="submit" class="button-signer" id="letsgo">Start</button>
-      </form>
       <p id="warning-error" style="color: red;"></p>
+
+      </form>
     </div>
 
     </div>
@@ -67,10 +66,10 @@
 
   </main><!--END OF body-main-->
 
-  <div class="loading-interface">
+  <!-- <div class="loading-interface">
     <div class="loader"></div>
     <p>Loading...</p>
-  </div>
+  </div> -->
 
   <script src="../main/Scripts/started/start.js"></script>
   <script src="../main/Scripts/source.js"></script>

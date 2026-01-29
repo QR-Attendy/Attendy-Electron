@@ -168,10 +168,10 @@
           <div class="title-total">
             <p class="total-title">Total students of </p>
             <div class="select-container">
-              <select name="" id="" class="select-box">
-                <option value="all">All Section</option>
-              </select>
+              <select name="section-attendance" class="select-box">
+                <option value="all">All Sections</option>
 
+              </select>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@
         </div>
 
         <div class="tableOf-mostPresent">
-          <h1>Most Present Students <p style="font-size: 15px;">Every Month</p>
+          <h1>Student's Leaderboard<p style="font-size: 15px;">Attendance counted every Month</p>
           </h1>
           <table>
             <thead>
@@ -272,6 +272,7 @@
         <div class="attendance-table-container">
           <div class="options">
             <button id="add-student">add Student</button>
+            <button id="importORexport">Import/Export</button>
             <form action="" class="search-container">
               <input type="search" name="search-student" id="" class="search-input" placeholder="Search for student..">
               <button id="search-btn">
@@ -289,20 +290,6 @@
             <caption class="caption-download">
               <div class="option-caption">
 
-                <button id="download-sheet" class="as-excel">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#000000">
-                    <path
-                      d="M120-120v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Z" />
-                  </svg>
-                  Download
-                </button>
-
-                <button id="delete">
-
-                  Delete
-                </button>
-
                 <div class="out-setter">
                   <div>
                     <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox"
@@ -311,6 +298,9 @@
                     <label style="margin-left:8px">Set Time Out:</label>
                     <input type="time" id="timeout-time" />
                   </div>
+                  <button id="delete">
+                    Delete
+                  </button>
                   <button id="apply-timeout-btn">Apply Time Out</button>
                 </div>
 
@@ -318,8 +308,6 @@
             </caption>
             <thead>
               <tr>
-                <th></th>
-                <th></th>
                 <th>Fullname</th>
                 <th>Time In/Out</th>
                 <th>Status</th>
@@ -395,6 +383,10 @@
           </button>
         </div>
       </div>
+      <div class="main-statistics-container">
+        <h1>Not available </h1>
+      </div>
+
     </section>
 
     <section class="calendar-container closed">
@@ -442,7 +434,7 @@
                   Download
                 </button>
                 <div class="select-container">
-                  <select name="section-attendance" id="attendance-section-select" class="select-box">
+                  <select name="section-attendance-specDate" class="select-box-specDate">
                     <option value="all">All Sections</option>
 
                   </select>
@@ -474,7 +466,6 @@
             </tbody>
           </table>
         </div>
-
       </div>
 
     </section>
@@ -499,47 +490,60 @@
                 </g>
               </svg>
             </div>
-            <img id="profile-picture2" src="../main/media/icons/github-mark-white.png" alt="">
+            <img id="profile-picture" src="../main/media/icons/github-mark-white.png" alt="">
           </button>
+
           <div class="profile-info">
             <p id="fullname4"></p>
             <p id="username4"></p>
             <p id="email4"></p>
           </div>
+
           <button id="sign-out">Sign out</button>
         </div>
+
         <div class="full-profile-settings-container">
-          <button>Your Schools</button>
-          <button>Change Email</button>
-          <button>Change Password</button>
+          <h1>Profile Settings</h1>
+          <button id="school-check">
+            <img src="../main/media/icons/LOGO-T.png" alt="">
+            <div class="text-content">
+              <p>Hello world</p>
+              <p>Description here</p>
+            </div>
+          </button>
+          <button id="change-password">Change Password</button>
+
         </div>
+
       </div>
 
-      <div class="miscellaneous-container">
-        <h1>Miscellaneous</h1>
+      <div class="Customization-container">
+        <h1>Customization</h1>
         <label id="dark-theme">
           <div>
             <p>Dark Theme Mode</p>
-            <b class="label-description">Incase your eyes is about to blow up atleast</b>
+            <b class="label-description">make the interface very dark incase doing work at night time</b>
           </div>
           <div class="switch">
             <input type="checkbox">
             <span class="slider round"></span>
           </div>
         </label>
+      </div>
 
-        <label id="">
+      <div class="Accesibility-container">
+        <h1>Accessibility</h1>
+
+        <label id="compact-table">
           <div>
-            <p>Table Compact<span class="NOTICE-EXP">EXPERIMENTAL</span></p>
-            <b class="label-description">make the table appearance look like Excel type shit</b>
+            <p>Table Compact</p>
+            <b class="label-description">decrease padding/margins to certain tables</b>
           </div>
           <div class="switch">
             <input type="checkbox">
             <span class="slider round"></span>
           </div>
         </label>
-        <p class="SOON">Some features will be cuming soon..</p>
-
       </div>
 
       <div class="app-info">
@@ -606,19 +610,8 @@
 
   </div>
 
-  <div class="time-setter-panel">
-    <div class="time-setter-out-panel">
-      <label for="timeout-time-setter">Set Time Out:</label>
-      <input type="time" id="timeout-time-setter" />
-      <button id="apply-timeout-btn-rc">Apply Time Out</button>
-    </div>
-    <div class="time-setter-in-panel">
-      <label for="timein-time-setter">Set Time In:</label>
-      <input type="time" id="timein-time-setter" />
-      <button id="apply-timein-btn-rc">Apply Time In</button>
-    </div>
-  </div>
 
+  <!-- Add Student Panel -->
   <div class="add-student-panel">
     <div class="add-student-card">
       <h2>Add Student</h2>
@@ -629,12 +622,54 @@
         <label for="student-username">Username:</label>
         <input type="text" id="student-username" name="student-username" required>
 
+
+        <div class="select-container">
+          <select name="section-attendance-add" class="select-box-add">
+            <option value="new">New Section</option>
+
+          </select>
+        </div>
+
         <label for="student-section">Section:</label>
         <input type="text" id="student-section" name="student-section" required>
 
         <div class="form-actions">
           <button type="button" id="cancel-add-student">Cancel</button>
           <button type="submit">Add Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Panel -->
+  <div class="edit-student-panel">
+    <div class="edit-student-card">
+      <h2>Edit Student</h2>
+      <form id="edit-student-form">
+        <label for="edit-student-fullname">Fullname:</label>
+        <input type="text" id="edit-student-fullname" name="edit-student-fullname" required>
+
+        <label for="edit-student-username">Username:</label>
+        <input type="text" id="edit-student-username" name="edit-student-username" required>
+
+        <label for="edit-student-time-in">Time In</label>
+        <input type="time" id="edit-student-time-in" name="edit-student-time-in">
+
+        <label for="edit-student-time-out">Time Out</label>
+        <input type="time" id="edit-student-time-out" name="edit-student-time-out">
+
+        <label for="edit-student-section">Section:</label>
+        <div class="select-container">
+          <select name="section-attendance-edit" class="select-box-edit">
+            <option value="new">New Section</option>
+
+          </select>
+        </div>
+        <input type="text" id="edit-student-section" name="edit-student-section" required>
+
+        <div class="form-actions">
+          <button type="button" id="cancel-edit-student">Cancel</button>
+          <button type="submit">Save Changes</button>
         </div>
       </form>
     </div>
@@ -649,7 +684,69 @@
   </div>
 
   <!-- duplication Notice Container -->
+  <div class="duplicate-panel">
+    <div class="duplicate-card">
+      <h3>Duplicate Entry Detected</h3>
+      <p><span id="duplication-student-name"></span> has the same entry but has the different <span
+          id="reason-dupe"></span></p>
+      <div class="actions">
+        <div class="original-entry-container">
+          <h4>Original Entry:</h4>
+          <div class="original-entry-details">
+            <p id="name-original"></p>
+            <p id="username-original"></p>
+            <p id="section-original"></p>
+          </div>
+        </div>
+        <div class="duplicate-entry-container">
+          <h4>Duplicate Entry:</h4>
+          <div class="duplicate-entry-details">
+            <p id="name-duplicate"></p>
+            <p id="username-duplicate"></p>
+            <p id="section-duplicate"></p>
+          </div>
+        </div>
+        <p>would you merge them? or select one of the entry to be save for today's attendance</p>
+        <button id="dup-cancel-btn" class="btn-cancel">Cancel</button>
+        <button id="dup-override-btn" class="btn-danger">Override</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- Deletion Notice -->
+  <div class="deletion-notice-panel">
+    <div class="deletion-notice-card">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete the selected entries? This action cannot be undone.</p>
+      <div class="actions">
+        <button id="deletion-cancel-btn" class="btn-cancel">Cancel</button>
+        <button id="deletion-confirm-btn" class="btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notice Panel -->
+  <div class="notice-panel">
+    <div class="notice-card">
+      <h1 id="headerNotice"></h1>
+      <p id="PmessageNotice"></p>
+      <div class="actions">
+        <button id="ok-btn" class="btn-okay">Okay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- import/Export Panel -->
+  <div class="importORexport-panel">
+    <div class="importORexport-card">
+      <h3>Import or Export an Attendance Sheet</h3>
+      <label for="file-name-input">File Name:</label>
+      <input type="text" name="filename" id="file-name-input" placeholder="Enter file name here..">
+      <div class="actions">
+        <button id="download-sheet" class="as-excel">Export as Excel</button>
+        <button id="import-attendance-btn" class="btn-import">Import from Excel</button>
+      </div>
+    </div>
 </body>
 
 <script src="../main/Scripts/dependency/excel-gobrtbrt-allinone.js"></script>

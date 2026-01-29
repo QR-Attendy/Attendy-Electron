@@ -115,3 +115,16 @@ try {
     })
   }
 } catch (e) { console.warn('settings collapse binding failed', e) }
+
+// probably slap this here too (QR panel)
+document.querySelector('#show-QR').addEventListener('click', () => {
+  document.querySelector('.Show-QR-panel').classList.toggle('active');
+  document.querySelector('.Show-QR-container').classList.toggle('active');
+
+});
+
+document.querySelector('#cls-Show-QR-Panel').addEventListener('click', () => {
+  document.querySelector('.Show-QR-panel').classList.toggle('active');
+  document.querySelector('.Show-QR-container').classList.toggle('active');
+
+});

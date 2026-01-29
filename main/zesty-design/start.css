@@ -1,0 +1,109 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center ;
+  position: static !important;
+}
+.main-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+    img {
+      width: 100px;
+      height: auto;
+    }
+}
+
+.body-started {
+  display: none;
+
+
+  z-index: 2;
+  margin-top: 100px;
+  transition: all 0.3s ease-in-out;
+  background: #33333388;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
+  box-shadow: white 0px 0px 8px;
+  color: #ffffff;
+  width: 350px;
+  height: 370px;
+  font-weight: bold;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .Sign-in-field,
+  .Sign-up-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+
+
+    label {
+      font-weight: 700;
+      font-size: 10px
+    }
+
+    .field-signer {
+      border-radius: 15px;
+      padding: 5px 7px;
+      border: 2px solid rgb(255, 255, 255);
+      outline: none;
+      background-color: white;
+      min-height: 20px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .choiceButton-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .Sign-up-choice-button {
+      width: 220px;
+      display: flex;
+      flex-direction: column;
+
+
+      .student,
+      .teacher {
+        display: flex;
+        flex-direction: row;
+        padding: 0px 0px 5px 0px;
+
+        label {
+          margin-left: 3px;
+          font-size: 13px;
+        }
+      }
+
+
+    }
+  }
+
+  .button-signer {
+    margin-left: auto;
+    padding: 10px 30px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: #ffffff 0px 0px 15px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}

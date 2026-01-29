@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const qr = await window.attendyAPI.generateQR(user);
-  document.getElementById("qr-image").src = `data:image/png;base64,${qr.qr_base64}`;
+  document.querySelectorAll("#qr-image").forEach(el => el.src = `data:image/png;base64,${qr.qr_base64}`);
 
 
 

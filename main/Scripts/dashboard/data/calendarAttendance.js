@@ -178,7 +178,7 @@ async function renderSelectedDateAttendance(dateInput) {
         const section = r.section || r.student_section || '';
         const status = r.status || '';
         const time = r.timestamp || r.time_in || r.time || '';
-        tr.innerHTML = `<td></td><td>${_escapeHtml(fullname)}</td><td>${_escapeHtml(section)}</td><td>${_escapeHtml(status)} ${_escapeHtml(time)}</td>`;
+        tr.innerHTML = `<td>${_escapeHtml(fullname)}</td><td>${_escapeHtml(section)}</td><td>${_escapeHtml(status)}</td><td>${_escapeHtml(time)}</td>`;
         tbody.appendChild(tr);
       }
     }
