@@ -355,9 +355,10 @@ li:hover {
       background-color: transparent;
       height: 50px;
 
-       &:hover {
-        transform: translateY(2px);
-       }
+      &:hover {
+        transform: scale(1.1);
+      }
+
 
       svg {
         height: 40px;
@@ -383,7 +384,7 @@ li:hover {
             text-decoration: underline;
           }
         }
-      } 
+      }
 
       div {
         text-align: end;
@@ -444,16 +445,20 @@ li:hover {
   }
 }
 
-.as-excel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+/* Disabled state styling for export buttons */
+button.as-excel[disabled],
+button.as-excel.disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  filter: grayscale(20%);
+  box-shadow: none !important;
+}
 
-  svg {
-    width: 30px;
-    height: 30px;
-  }
+/* Prevent hover/active transforms when disabled */
+button.as-excel[disabled]:hover,
+button.as-excel.disabled:hover {
+  transform: none !important;
 }
 
 #confirm-sign-out-modal {
@@ -779,25 +784,23 @@ tbody tr:last-child td:last-child {
         margin-left: auto;
         margin-right: 10px;
       }
+    }
 
-
+    .options2 {
       .out-setter {
+        display: flex;
+        align-items: center;
         padding: 15px;
         height: 100%;
         border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         gap: 10px;
 
         div {
-          display: flex;
-          align-items: center;
           gap: 6px;
         }
 
         button {
+          width: 120px;
           cursor: pointer;
           padding: 8px;
           margin: 0;
@@ -809,6 +812,7 @@ tbody tr:last-child td:last-child {
         }
       }
     }
+
 
     /* hide the checkbox column visually but keep the input in DOM for JS toggling */
     #attendance-tbody td.row-checkbox-cell,
@@ -859,22 +863,6 @@ tbody tr:last-child td:last-child {
           align-items: center;
           justify-content: space-around;
 
-          button {
-
-            cursor: pointer;
-            transition: all 300ms ease-in-out;
-            float: left;
-            border: none;
-            border-radius: 20px;
-
-            margin: 5px;
-            padding: 8px;
-            width: 100px;
-
-            font-size: 15px;
-            font-weight: 700;
-          }
-
           .search-container {
             height: 50px;
             width: 350px;
@@ -884,7 +872,6 @@ tbody tr:last-child td:last-child {
               width: 50px;
             }
           }
-
         }
       }
 
@@ -1069,11 +1056,13 @@ tbody tr:last-child td:last-child {
           padding: 10px;
 
           button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             cursor: pointer;
             transition: all 300ms ease-in-out;
-            float: left;
             border-radius: 10px;
-            height: inherit;
             padding: 10px;
             margin: 10px;
 
@@ -1122,14 +1111,16 @@ tbody tr:last-child td:last-child {
   }
 
   .full-profile-container {
-    transition: all 300ms ease-in-out allow-discrete;
+    transition: all 300ms ease-in-out;
     box-shadow: -7px 7px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid;
     border-radius: 20px;
     padding: 15px;
     display: grid;
 
+
     &:hover {
+
       .full-profile-settings-container {
         max-height: 500px;
         padding: 15px;
@@ -1221,7 +1212,7 @@ tbody tr:last-child td:last-child {
     }
 
     .full-profile-settings-container {
-      transition: all 300ms ease-in-out allow-discrete;
+      transition: all 300ms ease-in-out;
       overflow: hidden;
       max-height: 0;
       border: 1px solid white;
@@ -1232,7 +1223,8 @@ tbody tr:last-child td:last-child {
 
       #school-check {
         display: flex;
-        img { 
+
+        img {
           width: 50px;
         }
       }
@@ -1404,108 +1396,6 @@ tbody tr:last-child td:last-child {
   }
 }
 
-/* Removed time-setter styles (migrated to edit panel UI) */
-
-
-.Show-QR-panel {
-  transition: height 50ms ease-in-out, background-color 350ms ease-in-out, justify-content 350ms ease-in-out 250ms allow-discrete;
-  position: fixed;
-  top: 32px;
-  left: 0;
-  right: 0;
-  height: 0%;
-
-  z-index: 999;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  @starting-style {
-    justify-content: flex-start;
-  }
-
-  &.active {
-    justify-content: center;
-    background-color: #0000003e;
-    height: 100%;
-  }
-
-  #cls-Show-QR-Panel {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .Show-QR-container {
-    transition: all 550ms ease-in-out 250ms;
-    margin-top: -25px;
-    margin-left: 8px;
-    padding: 1em;
-    background-color: #07002400;
-    width: 261px;
-    height: 260px;
-    border-radius: 30px;
-    overflow: hidden;
-
-    display: flex;
-    align-items: center;
-
-
-    &.active {
-
-      background-color: #070024;
-      margin-top: 0px;
-      width: 85vw;
-      height: 60vh;
-
-      .qr-image-container {
-        .info-user {
-          width: 300px;
-
-
-        }
-
-        #qr-image {
-          width: 302px;
-          height: 302px;
-          opacity: 1;
-        }
-      }
-    }
-
-
-    .qr-image-container {
-      display: flex;
-      align-items: center;
-
-      #qr-image {
-        transition: all 550ms ease-in-out 50ms allow-discrete, width 550ms ease-in-out 250ms, height 550ms ease-in-out 250ms, opacity 300ms ease-in-out;
-        border-radius: 30px;
-        width: 202px;
-        height: 202px;
-        opacity: 0;
-
-        @starting-style {
-          opacity: 0;
-        }
-      }
-
-      #profile-picture {
-        border-radius: 100%;
-        width: 70px;
-        height: 70px;
-      }
-
-      .info-user {
-        transition: all 550ms ease-in-out 250ms;
-        overflow: hidden;
-        width: 0px;
-      }
-    }
-  }
-}
-
 /* deletion notice panel styling */
 .deletion-notice-panel {
   display: none;
@@ -1516,50 +1406,51 @@ tbody tr:last-child td:last-child {
   align-items: center;
   justify-content: center;
   z-index: 11000;
-}
 
-.deletion-notice-card {
-  background: #fff;
-  color: #111;
-  border-radius: 10px;
-  padding: 18px;
-  width: 360px;
-  max-width: calc(100% - 40px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
+  .deletion-notice-card {
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    padding: 18px;
+    width: 360px;
+    max-width: calc(100% - 40px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 
-.deletion-notice-card h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-}
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+    }
 
-.deletion-notice-card p {
-  margin: 0 0 14px 0;
-  color: #333;
-}
+    p {
+      margin: 0 0 14px 0;
+      color: #333;
+    }
 
-.deletion-notice-card .actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
 
-.deletion-notice-card .btn-danger {
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+    .btn-danger {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-.deletion-notice-card .btn-cancel {
-  background: #eee;
-  color: #333;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
+    .btn-cancel {
+      background: #eee;
+      color: #333;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  }
+
 }
 
 .notice-panel {
@@ -1619,90 +1510,90 @@ tbody tr:last-child td:last-child {
   z-index: 11002;
   padding: 20px;
   transition: opacity 160ms ease, visibility 160ms ease;
-}
 
-.add-student-panel.show,
-.add-student-panel.active {
-  display: flex;
-  opacity: 1;
-  visibility: visible;
-}
+  &.active,
+  &.show {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+  }
 
-.add-student-card {
-  width: 420px;
-  max-width: calc(100% - 40px);
-  background: #ffffff;
-  color: #111;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-  transform: translateY(0);
-  transition: transform 180ms ease, opacity 160ms ease;
-}
+  .add-student-card {
+    width: 420px;
+    max-width: calc(100% - 40px);
+    background: #ffffff;
+    color: #111;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    transform: translateY(0);
+    transition: transform 180ms ease, opacity 160ms ease;
 
-.add-student-card h2 {
-  margin: 0 0 12px 0;
-  font-size: 20px;
-  font-weight: 700;
-}
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
 
-.add-student-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-.add-student-card label {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
 
-.add-student-card input[type="text"],
-.add-student-card input[type="search"],
-.add-student-card input[type="time"] {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #dcdcdc;
-  font-size: 14px;
-  box-sizing: border-box;
-  background: #fff;
-  transition: border-color 120ms ease, box-shadow 120ms ease;
-}
+    input[type="text"],
+    input[type="search"],
+    input[type="time"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #dcdcdc;
+      font-size: 14px;
+      box-sizing: border-box;
+      background: #fff;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
 
-.add-student-card input:focus {
-  outline: none;
-  border-color: #6c7cff;
-  box-shadow: 0 4px 14px rgba(108, 124, 255, 0.12);
-}
+    input:focus {
+      outline: none;
+      border-color: #6c7cff;
+      box-shadow: 0 4px 14px rgba(108, 124, 255, 0.12);
+    }
 
-.add-student-card .form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 6px;
-}
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 6px;
 
-.add-student-card .form-actions button {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-}
+      button {
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+      }
 
-.add-student-card .form-actions #cancel-add-student,
-.add-student-card .form-actions .btn-cancel {
-  background: #f1f1f1;
-  color: #222;
-}
+      .btn-cancel {
+        background: #f1f1f1;
+        color: #222;
+      }
 
-.add-student-card .form-actions button[type="submit"],
-.add-student-card .form-actions .btn-primary {
-  background: #4c6dff;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(76, 109, 255, 0.12);
+      button[type="submit"],
+      .btn-primary {
+        background: #4c6dff;
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(76, 109, 255, 0.12);
+      }
+    }
+
+  }
 }
 
 /* responsive tweaks */
@@ -1731,33 +1622,32 @@ tbody tr:last-child td:last-child {
   z-index: 11003;
   padding: 20px;
   transition: opacity 160ms ease, visibility 160ms ease;
-}
 
-.edit-student-panel.show,
-.edit-student-panel.active {
-  display: flex;
-  opacity: 1;
-  visibility: visible;
-}
+  &.active,
+  &.show {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+  }
 
-.edit-student-card {
-  width: 420px;
-  max-width: calc(100% - 40px);
-  background: #ffffff;
-  color: #111;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-  transform: translateY(0);
-  transition: transform 180ms ease, opacity 160ms ease;
-}
+  .edit-student-card {
+    width: 420px;
+    max-width: calc(100% - 40px);
+    background: #ffffff;
+    color: #111;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    transform: translateY(0);
+    transition: transform 180ms ease, opacity 160ms ease;
 
-.edit-student-card h2 {
-  margin: 0 0 12px 0;
-  font-size: 20px;
-  font-weight: 700;
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+  }
 }
-
 /* Import/Export Panel */
 .importORexport-panel {
   display: none;

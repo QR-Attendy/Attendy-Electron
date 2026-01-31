@@ -287,10 +287,9 @@
 
           <table>
             <caption class="caption-actual">Attendance as of <span id="date-time-attendance-table"></span></caption>
-            <caption class="caption-download">
-              <div class="option-caption">
-
+            <caption class="options2">
                 <div class="out-setter">
+
                   <div>
                     <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox"
                         id="select-all-rows">
@@ -298,13 +297,12 @@
                     <label style="margin-left:8px">Set Time Out:</label>
                     <input type="time" id="timeout-time" />
                   </div>
-                  <button id="delete">
-                    Delete
-                  </button>
-                  <button id="apply-timeout-btn">Apply Time Out</button>
-                </div>
 
-              </div>
+                  <button id="delete">Delete</button>
+                  <button id="apply-timeout-btn">Apply Time Out</button>
+
+                </div>
+                </caption>
             </caption>
             <thead>
               <tr>
@@ -747,6 +745,7 @@
         <button id="import-attendance-btn" class="btn-import">Import from Excel</button>
       </div>
     </div>
+  </div>
 </body>
 
 <script src="../main/Scripts/dependency/excel-gobrtbrt-allinone.js"></script>

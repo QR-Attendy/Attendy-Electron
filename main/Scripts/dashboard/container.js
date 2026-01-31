@@ -200,5 +200,26 @@ document.addEventListener('DOMContentLoaded', () => {
   updateNtfVisibility();
 });
 
+// Disable/enable main export button when attendance table has no visible rows
+document.addEventListener('DOMContentLoaded', () => {
+  const downloadBtn = document.getElementById('download-sheet');
+  const attendanceTbody = document.getElementById('attendance-tbody');
+  if (!downloadBtn || !attendanceTbody) return;
+
+  function updateMainDownloadState() {
+    const rows = Array.from(attendanceTbody.children).filter(n => n.nodeType === 1);
+    const hasVisible = rows.some(r => r.offsetParent !== null);
+    downloadBtn.disabled = !hasVisible;
+    // keep a CSS hook as well for styles that don't target [disabled]
+    if (downloadBtn.disabled) downloadBtn.classList.add('disabled'); else downloadBtn.classList.remove('disabled');
+  }
+
+  const mo = new MutationObserver(() => updateMainDownloadState());
+  mo.observe(attendanceTbody, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+
+  // initial state
+  updateMainDownloadState();
+});
+
 
 
