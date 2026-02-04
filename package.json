@@ -1,10 +1,10 @@
 {
-  "name": "attendy",
-  "productName": "Attendy",
+  "name": "qr-attend-x",
+  "productName": "QRttendX",
   "version": "0.1.0-a3",
-  "description": "Attendy",
+  "description": "QRttendX is an advanced attendance management system that leverages QR code technology to streamline the process of tracking and managing attendance in various settings, including educational institutions and corporate environments.",
   "license": "AGPL-3.0-only",
-  "author": "ÆCE",
+  "author": "ÆCE acebld",
   "type": "module",
   "main": "source/snapdragon.js",
   "scripts": {
@@ -28,7 +28,7 @@
       "deleteAppDataOnUninstall": true,
       "installerIcon": "main/media/icons/LOGO-ico.ico",
       "uninstallerIcon": "main/media/icons/LOGO-ico.ico",
-      "uninstallDisplayName": "Attendy on Desktop",
+      "uninstallDisplayName": "QRttendX on Desktop",
       "license": "LICENSE"
     },
     "extraResources": [

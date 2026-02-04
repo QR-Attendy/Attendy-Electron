@@ -314,3 +314,9 @@ app.on("before-quit", () => {
   // unregister global shortcuts when quitting
   try { globalShortcut.unregisterAll(); } catch (e) { /* ignore */ }
 });
+
+// Ensure backend shuts down when all windows are closed (Windows/Linux).
+app.on("window-all-closed", () => {
+  try { killBackendProcess(); } catch (e) { /* ignore */ }
+  app.quit();
+});
