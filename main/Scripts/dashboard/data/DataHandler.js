@@ -302,53 +302,33 @@
       });
     }
 
-    // calendar download (Attendance for selected date)
+    // calendar download (Attendance for selected date) — open Download Options panel
     if (downloadSpecBtn) {
-      downloadSpecBtn.addEventListener('click', async () => {
-        // collect only visible rows from the calendar-specific tbody (respecting search/section filters)
-        const visibleTrs = Array.from(document.querySelectorAll('#attendance-specDate-tbody tr')).filter(tr => (tr.style.display || '') !== 'none');
-        const ids = visibleTrs.map(tr => Number(tr.getAttribute('data-id'))).filter(Boolean);
-        const data = collectRowsDataFor('#attendance-specDate-tbody', ids);
-        // determine filename: prefer user-specified input, otherwise calendar date or today
-        const fnameInput = document.getElementById('file-name-input');
-        let filename = '';
-        if (fnameInput && fnameInput.value && String(fnameInput.value).trim()) {
-          filename = String(fnameInput.value).trim();
-        } else {
-          // prefer calendarAttendance last selected key (YYYY-MM-DD)
-          let base = '';
-          try {
-            const getKey = (window.calendarAttendance && typeof window.calendarAttendance.getLastSelectedDateKey === 'function') ? window.calendarAttendance.getLastSelectedDateKey : null;
-            const key = getKey ? getKey() : null;
-            if (key && typeof key === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(key)) {
-              const parts = key.split('-'); // [YYYY,MM,DD]
-              base = `attendance as of (${parts[1]}-${parts[2]}-${parts[0]})`;
-            }
-          } catch (e) { /* ignore */ }
-          if (!base) {
-            const labelEl = document.getElementById('specific-day-attendance');
-            if (labelEl && labelEl.textContent) {
-              const dd = new Date(labelEl.textContent);
-              if (!isNaN(dd.getTime())) {
-                const mm = String(dd.getMonth() + 1).padStart(2, '0');
-                const dday = String(dd.getDate()).padStart(2, '0');
-                const yy = String(dd.getFullYear());
-                base = `attendance as of (${mm}-${dday}-${yy})`;
-              }
-            }
-          }
-          if (!base) base = `attendance as of (${new Date().toISOString().slice(0, 10)})`;
-          filename = base;
-        }
-        filename = filename.toLowerCase().endsWith('.xlsx') ? filename : `${filename}.xlsx`;
+      downloadSpecBtn.addEventListener('click', (ev) => {
         try {
-          try { showNotice('Download started', 'Preparing your download...'); } catch (e) { /* ignore */ }
-          await downloadAsXlsx(data, filename);
-          try { showNotice('Download complete', `Saved ${filename}`); } catch (e) { /* ignore */ }
-        } catch (e) {
-          console.error('download spec failed', e);
-          try { showNotice('Download failed', 'An error occurred while preparing the file'); } catch (ee) { /* ignore */ }
+          ev && ev.preventDefault && ev.preventDefault();
+        } catch (e) { }
+        const panel = document.querySelector('.download-option-panel');
+        if (!panel) {
+          showNotice && typeof showNotice === 'function' && showNotice('Missing panel', 'Download options panel not found');
+          return;
         }
+        // populate week start/end labels (this week) if present
+        try {
+          const now = new Date();
+          const day = now.getDay();
+          const diffToMon = (day + 6) % 7;
+          const mon = new Date(now);
+          mon.setDate(now.getDate() - diffToMon);
+          const sun = new Date(mon);
+          sun.setDate(mon.getDate() + 6);
+          const startLabel = document.getElementById('start-of-week-day');
+          const endLabel = document.getElementById('end-of-week-day');
+          if (startLabel) startLabel.textContent = `${String(mon.getMonth() + 1).padStart(2, '0')}-${String(mon.getDate()).padStart(2, '0')}-${mon.getFullYear()}`;
+          if (endLabel) endLabel.textContent = `${String(sun.getMonth() + 1).padStart(2, '0')}-${String(sun.getDate()).padStart(2, '0')}-${sun.getFullYear()}`;
+        } catch (e) { /* ignore */ }
+        panel.style.display = 'flex';
+        panel.classList.add('active');
       });
     }
 
@@ -1084,6 +1064,13 @@
               if (section) tr.dataset.section = section;
               if (username) tr.dataset.username = username;
 
+              // update section cell (calendar table uses column 2)
+              try {
+                const secEl = tr.querySelector('.section-cell');
+                if (secEl && section) secEl.textContent = section;
+                else if (section && tr.children && tr.children[1]) tr.children[1].textContent = section;
+              } catch (e) { /* ignore */ }
+
               // update status cell / select
               try {
                 const stEl = tr.querySelector('.status-select');
@@ -1102,13 +1089,20 @@
                 }
               } catch (e) { /* ignore */ }
 
-              // update times cell
+              // update times cell(s)
               const sel = tr.querySelector('.times-select');
               if (sel) {
                 if (sel.options[0]) sel.options[0].textContent = `Time In: ${tIn ? hhmmToDisplay(tIn) : 'Not Set'}`;
                 if (sel.options[1]) sel.options[1].textContent = `Time Out: ${tOut ? hhmmToDisplay(tOut) : 'Not Set'}`;
               } else {
-                // try to find a td that contains IN: or OUT: text and replace its innerHTML
+                // calendar table uses separate time cells
+                try {
+                  const inCell = tr.querySelector('.time-in-cell') || (tr.children && tr.children[3]);
+                  const outCell = tr.querySelector('.time-out-cell') || (tr.children && tr.children[4]);
+                  if (inCell && tIn) inCell.textContent = hhmmToDisplay(tIn);
+                  if (outCell && tOut) outCell.textContent = hhmmToDisplay(tOut);
+                } catch (e) { /* ignore */ }
+                // fallback for combined IN/OUT layout
                 try {
                   const tds = Array.from(tr.querySelectorAll('td'));
                   const timesTd = tds.find(td => /IN[: ]|OUT[: ]/i.test(td.textContent || ''));
@@ -1119,11 +1113,38 @@
           }
         } catch (e) { /* ignore DOM update errors */ }
 
+        // update calendar view data immediately (no full refresh)
+        try {
+          const cal = (typeof window !== 'undefined' && window.calendarAttendance) ? window.calendarAttendance : null;
+          if (cal && id && typeof cal.updateRecordById === 'function') {
+            const updates = {};
+            if (fullname) { updates.student_fullname = fullname; updates.fullname = fullname; }
+            if (username) { updates.student_username = username; updates.username = username; }
+            if (section) { updates.section = section; updates.student_section = section; }
+            if (status) { updates.status = status; }
+            const res = cal.updateRecordById(id, updates);
+            const key = (res && res.key) || (typeof cal.getLastSelectedDateKey === 'function' ? cal.getLastSelectedDateKey() : null);
+            if (key && typeof cal.renderSelectedDateAttendance === 'function') {
+              cal.renderSelectedDateAttendance(key);
+            }
+          }
+        } catch (e) { /* ignore calendar update errors */ }
+
         // refresh relevant views
         try { const t = await import('./todayAttendanceView.js'); if (t && typeof t.renderTodayAttendance === 'function') t.renderTodayAttendance(); } catch (e) { }
         try { const r = await import('./recentStudentsView.js'); if (r && typeof r.renderRecentStudents === 'function') r.renderRecentStudents(); } catch (e) { }
         try { const m = await import('./mostPresentView.js'); if (m && typeof m.renderMostPresent === 'function') m.renderMostPresent(); } catch (e) { }
         try { const s = await import('./todayAttendanceSectionView.js'); if (s && typeof s.renderAttendanceSections === 'function') s.renderAttendanceSections(); } catch (e) { }
+        try {
+          const c = await import('./calendarAttendance.js');
+          if (c && c.default && typeof c.default.refreshAll === 'function') {
+            await c.default.refreshAll();
+            const k = (typeof c.default.getLastSelectedDateKey === 'function') ? c.default.getLastSelectedDateKey() : null;
+            if (k && typeof c.default.renderSelectedDateAttendance === 'function') {
+              c.default.renderSelectedDateAttendance(k);
+            }
+          }
+        } catch (e) { /* ignore */ }
 
         // ensure selects and counts update to reflect changed/added section
         try { const ctrl = await import('./dashboardController.js'); if (ctrl && typeof ctrl.populateSectionSelects === 'function') await ctrl.populateSectionSelects(); } catch (e) { /* ignore */ }

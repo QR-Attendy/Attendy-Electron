@@ -1815,3 +1815,92 @@ tbody tr:last-child td:last-child {
     font-size: 18px;
   }
 }
+
+/* Download Options Panel (week/month/year) */
+.download-option-panel {
+  display: none;
+  position: fixed;
+  top: 32px !important;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  align-items: center;
+  justify-content: center;
+  z-index: 11006;
+  padding: 20px;
+  transition: opacity 160ms ease, visibility 160ms ease;
+
+  &.active,
+  &.show {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .download-option-card {
+    width: 520px;
+    max-width: calc(100% - 40px);
+    background: #fff;
+    color: #111;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+    h3 {
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 12px 0;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .select-container {
+      margin-bottom: 12px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #dcdcdc;
+      font-size: 14px;
+      box-sizing: border-box;
+      background: #fff;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #6c7cff;
+      box-shadow: 0 4px 14px rgba(108, 124, 255, 0.12);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .as-excel {
+      background: #0b8f3f;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .as-excel[disabled] {
+      opacity: 0.5 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+      filter: grayscale(20%);
+      box-shadow: none !important;
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "name": "qr-attend-x",
   "productName": "QRttendX",
-  "version": "0.1.0-a3",
-  "description": "QRttendX is an advanced attendance management system that leverages QR code technology to streamline the process of tracking and managing attendance in various settings, including educational institutions and corporate environments.",
+  "version": "0.1.1-a3",
+  "description": "QRttendX made by ÆCE acebld",
   "license": "AGPL-3.0-only",
-  "author": "ÆCE acebld",
+  "author": "QRttendX by ÆCE acebld",
   "type": "module",
   "main": "source/snapdragon.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "build": "electron-builder"
   },
   "build": {
-    "appId": "com.attendy.bld",
+    "appId": "com.QRttendX.desk",
     "win": {
       "target": [
         {

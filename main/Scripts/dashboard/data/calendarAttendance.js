@@ -114,6 +114,23 @@ function setRecordsForDate(dateKey, records) {
   _emitChange();
 }
 
+function updateRecordById(id, updates) {
+  const targetId = Number(id);
+  if (!targetId) return null;
+  for (const [key, arr] of _byDate.entries()) {
+    if (!Array.isArray(arr)) continue;
+    const idx = arr.findIndex(r => Number(r && (r.id || r._id || r.row_id || 0)) === targetId);
+    if (idx >= 0) {
+      const current = arr[idx] || {};
+      const next = Object.assign({}, current, updates || {});
+      arr[idx] = next;
+      _emitChange();
+      return { key, record: next };
+    }
+  }
+  return null;
+}
+
 function subscribe(cb) {
   if (typeof cb !== 'function') return () => { };
   _subs.add(cb);
@@ -135,6 +152,7 @@ const calendarAttendance = {
   getAttendanceByMonth,
   getTodayAttendance,
   setRecordsForDate,
+  updateRecordById,
   subscribe,
   // last selected date key (YYYY-MM-DD) - updated when renderSelectedDateAttendance runs
   _lastSelectedKey: null,
@@ -162,7 +180,7 @@ async function renderSelectedDateAttendance(dateInput) {
     if (!records || records.length === 0) {
       const tr = document.createElement('tr');
       const td = document.createElement('td');
-      td.colSpan = 4;
+      td.colSpan = 5;
       td.textContent = 'No records for this date';
       tr.appendChild(td);
       tbody.appendChild(tr);

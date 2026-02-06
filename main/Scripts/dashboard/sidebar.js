@@ -143,8 +143,23 @@ function setActiveNav() {
   });
 }
 
-window.addEventListener('hashchange', setActiveNav);
+window.addEventListener('hashchange', () => {
+  setActiveNav();
+  updateQRcontainerVisibility();
+});
+
 setActiveNav();
+
+// Ensure QR container visibility updates when nav/hash changes (initial run)
+updateQRcontainerVisibility();
+
+// Also update visibility when any sidebar nav link is clicked (some navigation may not change hash)
+document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+  a.addEventListener('click', () => {
+    // small timeout to allow any other click handlers to run first
+    setTimeout(() => updateQRcontainerVisibility(), 10);
+  });
+});
 
 // Global for container.js: update QR panel visibility in both sidebars
 function updateQRcontainerVisibility() {

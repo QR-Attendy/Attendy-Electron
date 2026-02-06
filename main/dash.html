@@ -2,8 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' http://localhost:* http://127.0.0.1:*;">
+  <meta charset="UTF-8" http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' http://localhost:* http://127.0.0.1:*;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../main/zesty-design/source.css">
   <link rel="stylesheet" href="../main/zesty-design/dashboard.css">
@@ -11,6 +10,7 @@
 </head>
 
 <body>
+
   <!--START Custom Title Bar (ELECTRON)-->
   <!-- START OF window controls -->
   <div class="window">
@@ -549,7 +549,7 @@
       </div>
 
       <div class="app-info">
-        <p>QRttendX ALPHA <br>0.1.0-a3</p>
+        <p>QRttendX ALPHA <br>0.1.1-a3</p>
         <p>© 2025 · All rights reserved</p>
         <p>Licensed under AGPL-3.0</p>
       </div>
@@ -813,6 +813,34 @@
     </div>
   </div>
 
+  <!-- Download Option panel (Calendar container only) -->
+  <div class="download-option-panel">
+    <div class="download-option-card">
+      <h3>Download Options</h3>
+      <p>Select base on what days/weeks/months to download:</p>
+      <div class="select-container">
+        <select name="download-option-select" id="download-option-select" class="select-box-download">
+          <option value="Today">Today</option>
+          <option value="specific-week">Specific Week</option>
+          <option value="specific-month">Specific Month</option>
+          <option value="specific-year">Specific Year</option>
+        </select>
+      </div>
+
+      <div class="select-container week-select">
+        <select name="download-week-select" id="download-week-select" class="select-box-download-week">
+          <option value="thisweek">This week <span id="start-of-week-day"></span> - <span id="end-of-week-day"></span>
+          </option>
+
+        </select>
+      </div>
+
+              <div class="actions">
+                <button id="download-excel-btn" class="as-excel">Download</button>
+              </div>
+      </div>
+    </div>
+
   <!-- Notice Panel -->
   <div class="notice-panel">
     <div class="notice-card">
@@ -831,7 +859,7 @@
       <label for="file-name-input">File Name:</label>
       <input type="text" name="filename" id="file-name-input" placeholder="Enter file name here..">
       <div class="actions">
-        <button id="download-sheet" class="as-excel">Export as Excel</button>
+        <button id="download-sheet" class="as-excel">Export/Download as Excel</button>
         <button id="import-attendance-btn" class="btn-import">Import from Excel</button>
       </div>
     </div>
