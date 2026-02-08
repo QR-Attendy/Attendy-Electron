@@ -497,8 +497,11 @@
                     if (mapped.time_in) {
                       const hhmm = parseTimeToHHMM(mapped.time_in);
                       if (hhmm) {
-                        const [hh, mm] = hhmm.split(':').map(Number);
-                        const d = new Date(); d.setHours(hh || 0, mm || 0, 0, 0);
+                        const parts = hhmm.split(':').map(Number);
+                        const hh = parts[0] || 0;
+                        const mm = parts[1] || 0;
+                        const ss = parts[2] || 0;
+                        const d = new Date(); d.setHours(hh, mm, ss, 0);
                         payload.time_in = d.toISOString();
                       } else {
                         const d2 = new Date(mapped.time_in);
@@ -508,8 +511,11 @@
                     if (mapped.time_out) {
                       const hhmm2 = parseTimeToHHMM(mapped.time_out);
                       if (hhmm2) {
-                        const [hh2, mm2] = hhmm2.split(':').map(Number);
-                        const d3 = new Date(); d3.setHours(hh2 || 0, mm2 || 0, 0, 0);
+                        const parts2 = hhmm2.split(':').map(Number);
+                        const hh2 = parts2[0] || 0;
+                        const mm2 = parts2[1] || 0;
+                        const ss2 = parts2[2] || 0;
+                        const d3 = new Date(); d3.setHours(hh2, mm2, ss2, 0);
                         payload.time_out = d3.toISOString();
                       } else {
                         const d3b = new Date(mapped.time_out);
@@ -806,9 +812,15 @@
     function hhmmToDisplay(hhmm) {
       if (!hhmm) return '';
       try {
-        const [hh, mm] = String(hhmm).split(':').map(Number);
-        const d = new Date(); d.setHours(hh || 0, mm || 0, 0, 0);
-        return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s+/g, '');
+        const parts = String(hhmm).split(':').map(Number);
+        const hh = parts[0] || 0;
+        const mm = parts[1] || 0;
+        const ss = parts[2] || 0;
+        const d = new Date(); d.setHours(hh, mm, ss, 0);
+        // include seconds in display only when provided
+        const opts = { hour: 'numeric', minute: '2-digit', hour12: true };
+        if (parts.length >= 3) opts.second = '2-digit';
+        return d.toLocaleTimeString('en-US', opts).replace(/\s+/g, '');
       } catch (e) { return hhmm; }
     }
 
@@ -834,6 +846,13 @@
     }
 
     function parseTimeToHHMM(raw) {
+      // NOTE: This parser normalizes many possible time formats into a
+      // canonical "HH:MM" form. It intentionally drops seconds when
+      // present (e.g. "06:29:29PM" -> "06:29") because the edit
+      // UI inputs and internal hh:mm display widgets expect only hours
+      // and minutes. If you need to preserve seconds through the edit
+      // flow, update this function to return seconds (HH:MM:SS) and
+      // adjust the edit input handling and downstream ISO conversion.
       if (!raw) return '';
       let s = String(raw || '').trim();
       // remove common labels and non-breaking spaces
@@ -845,7 +864,7 @@
         const iso = Date.parse(s);
         if (!isNaN(iso)) {
           const d = new Date(iso);
-          return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+          return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
         }
       }
 
@@ -854,27 +873,31 @@
       if (m) {
         let hh = parseInt(m[1], 10);
         const mm = String(parseInt(m[2], 10)).padStart(2, '0');
+        const ss = m[3] ? String(parseInt(m[3], 10)).padStart(2, '0') : null;
         const ampm = (m[4] || '').toUpperCase();
         if (ampm === 'AM') {
           if (hh === 12) hh = 0;
         } else if (ampm === 'PM') {
           if (hh < 12) hh += 12;
         }
-        return `${String(hh).padStart(2, '0')}:${mm}`;
+        return ss ? `${String(hh).padStart(2, '0')}:${mm}:${ss}` : `${String(hh).padStart(2, '0')}:${mm}`;
       }
 
       // Try to parse other Date strings as fallback
       const iso2 = Date.parse(s);
       if (!isNaN(iso2)) {
         const d2 = new Date(iso2);
-        return `${String(d2.getHours()).padStart(2, '0')}:${String(d2.getMinutes()).padStart(2, '0')}`;
+        return `${String(d2.getHours()).padStart(2, '0')}:${String(d2.getMinutes()).padStart(2, '0')}:${String(d2.getSeconds()).padStart(2, '0')}`;
       }
 
       // Try to extract any hh:mm pair anywhere in the string
-      const any = (String(raw || '')).match(/(\d{1,2}:\d{2})/);
+      const any = (String(raw || '')).match(/(\d{1,2}:\d{2}(?::\d{2})?)/);
       if (any) {
         const parts = any[1].split(':');
-        return `${String(parseInt(parts[0], 10)).padStart(2, '0')}:${String(parseInt(parts[1], 10)).padStart(2, '0')}`;
+        const hh = String(parseInt(parts[0], 10)).padStart(2, '0');
+        const mm = String(parseInt(parts[1] || '0', 10)).padStart(2, '0');
+        const ss = parts[2] ? String(parseInt(parts[2], 10)).padStart(2, '0') : null;
+        return ss ? `${hh}:${mm}:${ss}` : `${hh}:${mm}`;
       }
 
       return '';
@@ -952,18 +975,28 @@
         if (editFullname) editFullname.value = fullname || '';
         if (editUsername) editUsername.value = username || '';
         // assign parsed hh:mm to inputs; also set attribute to ensure UI widgets pick it up
+        // NOTE: parseTimeToHHMM will return only HH:MM (seconds are removed).
+        // That means the edit inputs will display and submit times without
+        // seconds. The original row or canonical store may contain seconds
+        // (ISO or hh:mm:ss) but the edit flow normalizes to minutes.
         try {
-          const parsedIn = parseTimeToHHMM(tIn) || '';
-          const parsedOut = parseTimeToHHMM(tOut) || '';
+          const parsedFullIn = parseTimeToHHMM(tIn) || '';
+          const parsedFullOut = parseTimeToHHMM(tOut) || '';
+          // inputs expect HH:MM; derive that form for the UI but keep
+          // the full parsed (HH:MM or HH:MM:SS) in the panel dataset so
+          // we can preserve seconds when saving if the user doesn't
+          // change the minute portion.
+          const parsedInForInput = parsedFullIn ? parsedFullIn.split(':').slice(0, 2).join(':') : '';
+          const parsedOutForInput = parsedFullOut ? parsedFullOut.split(':').slice(0, 2).join(':') : '';
           if (editTimeIn) {
-            editTimeIn.value = parsedIn;
-            try { editTimeIn.setAttribute('value', parsedIn); } catch (e) { /* ignore */ }
+            editTimeIn.value = parsedInForInput;
+            try { editTimeIn.setAttribute('value', parsedInForInput); } catch (e) { /* ignore */ }
           }
           if (editTimeOut) {
-            editTimeOut.value = parsedOut;
-            try { editTimeOut.setAttribute('value', parsedOut); } catch (e) { /* ignore */ }
+            editTimeOut.value = parsedOutForInput;
+            try { editTimeOut.setAttribute('value', parsedOutForInput); } catch (e) { /* ignore */ }
           }
-          // no debug logs per user's request
+          try { if (editPanel) { editPanel.dataset.origTimeIn = parsedFullIn || ''; editPanel.dataset.origTimeOut = parsedFullOut || ''; } } catch (e) { /* ignore */ }
         } catch (e) { /* ignore assign errors */ }
         // populate status select if present
         try {
@@ -1082,8 +1115,22 @@
             section = String(editSection.value || '').trim();
           }
         } catch (e) { section = (editSection && editSection.value) ? String(editSection.value).trim() : ''; }
-        const tIn = editTimeIn ? editTimeIn.value : '';
-        const tOut = editTimeOut ? editTimeOut.value : '';
+        let tIn = editTimeIn ? editTimeIn.value : '';
+        let tOut = editTimeOut ? editTimeOut.value : '';
+        // Preserve seconds from the original parsed values (if present)
+        // when the user hasn't modified the minute portion.
+        try {
+          const origIn = (editPanel && editPanel.dataset && editPanel.dataset.origTimeIn) ? editPanel.dataset.origTimeIn : '';
+          const origOut = (editPanel && editPanel.dataset && editPanel.dataset.origTimeOut) ? editPanel.dataset.origTimeOut : '';
+          if (origIn && origIn.split(':').length === 3) {
+            const origNoSec = origIn.split(':').slice(0, 2).join(':');
+            if (tIn === origNoSec) tIn = origIn;
+          }
+          if (origOut && origOut.split(':').length === 3) {
+            const origNoSecOut = origOut.split(':').slice(0, 2).join(':');
+            if (tOut === origNoSecOut) tOut = origOut;
+          }
+        } catch (e) { /* ignore */ }
 
         // attempt to update canonical store first
         try {
@@ -1118,16 +1165,30 @@
               // include time fields (ISO) when calling backend
               const serverPayload = Object.assign({}, payload);
               if (id) serverPayload.id = id;
+              // Convert edit input (`HH:MM`) into an ISO timestamp for the
+              // server. Note: seconds are explicitly set to 0 here because
+              // the edit UI only provides hours/minutes. If you want to
+              // preserve seconds, the edit input must supply them and the
+              // parser above must return them as well.
               if (tIn) {
-                const [hh1, mm1] = String(tIn).split(':').map(Number);
-                const d1 = new Date(); d1.setHours(hh1 || 0, mm1 || 0, 0, 0);
+                const parts1 = String(tIn).split(':').map(Number);
+                const hh1 = parts1[0] || 0;
+                const mm1 = parts1[1] || 0;
+                const ss1 = parts1[2] || 0;
+                const d1 = new Date(); d1.setHours(hh1, mm1, ss1, 0);
                 serverPayload.time_in = d1.toISOString();
               }
               // include status when present
               if (status) serverPayload.status = status;
+              // Same for Time Out: build an ISO using HH:MM from the edit
+              // field and set seconds to zero. This is why saved rows lose
+              // any original seconds value.
               if (tOut) {
-                const [hh2, mm2] = String(tOut).split(':').map(Number);
-                const d2 = new Date(); d2.setHours(hh2 || 0, mm2 || 0, 0, 0);
+                const parts2 = String(tOut).split(':').map(Number);
+                const hh2 = parts2[0] || 0;
+                const mm2 = parts2[1] || 0;
+                const ss2 = parts2[2] || 0;
+                const d2 = new Date(); d2.setHours(hh2, mm2, ss2, 0);
                 serverPayload.time_out = d2.toISOString();
               }
 
@@ -1145,18 +1206,28 @@
               }
             } catch (e) { /* ignore */ }
 
-            // time updates
+            // time updates (local store): convert HH:MM edit values into
+            // ISO timestamps and persist. Note that seconds are set to 0
+            // because the edit UI and parsing only handle hours and
+            // minutes; this is the line that causes saved rows to lose
+            // any original seconds component.
             if (id && tIn) {
-              const [hh, mm] = String(tIn).split(':').map(Number);
-              const d = new Date(); d.setHours(hh || 0, mm || 0, 0, 0);
+              const parts = String(tIn).split(':').map(Number);
+              const hh = parts[0] || 0;
+              const mm = parts[1] || 0;
+              const ss = parts[2] || 0;
+              const d = new Date(); d.setHours(hh, mm, ss, 0);
               const iso = d.toISOString();
               if (typeof store.setTimeInForRow === 'function') await store.setTimeInForRow(id, iso);
             }
             if (id && tOut) {
-              const [hh, mm] = String(tOut).split(':').map(Number);
-              const d = new Date(); d.setHours(hh || 0, mm || 0, 0, 0);
-              const iso = d.toISOString();
-              if (typeof store.setTimeoutForRows === 'function') await store.setTimeoutForRows([id], iso);
+              const partsO = String(tOut).split(':').map(Number);
+              const hhO = partsO[0] || 0;
+              const mmO = partsO[1] || 0;
+              const ssO = partsO[2] || 0;
+              const dO = new Date(); dO.setHours(hhO, mmO, ssO, 0);
+              const isoO = dO.toISOString();
+              if (typeof store.setTimeoutForRows === 'function') await store.setTimeoutForRows([id], isoO);
             }
           }
         } catch (e) { /* ignore store errors */ }
@@ -1391,10 +1462,13 @@
           showNotice('Select a time', 'Please select a time first');
           return;
         }
-        // build ISO string for today with selected hh:mm
-        const [hh, mm] = timeInput.value.split(':').map(Number);
+        // build ISO string for today with selected hh:mm(:ss) - support seconds if provided
+        const partsT = String(timeInput.value).split(':').map(Number);
+        const hh = partsT[0] || 0;
+        const mm = partsT[1] || 0;
+        const ss = partsT[2] || 0;
         const d = new Date();
-        d.setHours(hh, mm, 0, 0);
+        d.setHours(hh, mm, ss, 0);
         const iso = d.toISOString();
 
         //Fix for Issue #2 Time out is still being set on the data that has time out on it - ryuzkzqt-ops
