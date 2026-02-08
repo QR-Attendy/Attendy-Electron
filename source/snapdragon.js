@@ -214,10 +214,10 @@ function startedWindow() {
 //Dashboard Window
 function dashboardWindow() {
   dashboardWin = new BrowserWindow({
-    width: 900,
-    height: 900,
-    minHeight: 650,
-    minWidth: 850,
+    width: 1200,
+    height: 850,
+    minHeight: 750,
+    minWidth: 1300,
     titleBarStyle: "hidden",
     webPreferences: {
       preload: path.join(__dirname, "../source/load.js"),
